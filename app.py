@@ -95,6 +95,7 @@ def main():
         draw_window(xpos, currentanim_index)
 
 def draw_window(xpos, currentanim_index):
+    global last_time 
     WINDOW.fill(BACKGROUND)
 
     # === ADD: Render background ===
@@ -126,6 +127,8 @@ def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
-main()
+
+if __name__ == "__main__":
+  main()
 
 
