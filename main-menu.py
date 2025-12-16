@@ -18,9 +18,9 @@ TITLE_FONT = pygame.font.Font(None, 80)
 MENU_FONT = pygame.font.Font(None, 40)
 
 # Text surfaces
-title_text = TITLE_FONT.render("MY GAME", True, WHITE)
-start_text = MENU_FONT.render("Press ENTER to Start", True, WHITE)
-quit_text = MENU_FONT.render("Press ESC to Quit", True, WHITE)
+title_text = TITLE_FONT.render("DRUNKEN SAILOR", True, BLACK)
+start_text = MENU_FONT.render("Press ENTER to Start", True, BLACK)
+quit_text = MENU_FONT.render("Press ESC to Quit", True, BLACK)
 
 # Text positions
 title_rect = title_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
@@ -32,7 +32,7 @@ clock = pygame.time.Clock()
 
 def main_menu():
     while True:
-        screen.fill(BLACK)
+        screen.fill(WHITE)
 
         # Draw text
         screen.blit(title_text, title_rect)
