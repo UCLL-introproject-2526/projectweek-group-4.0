@@ -8,7 +8,7 @@ pygame.init()
 # Screen settings
 WIDTH, HEIGHT = 1200, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Drunken Sailor")
 
 # Colors
 WHITE = (255, 255, 255)
