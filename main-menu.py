@@ -3,9 +3,11 @@ import pygame
 import sys
 from app import main
 from sprite import Sprite
+from audio import Audio
 
 pygame.init()
 
+audio = Audio(volume=1.0)
 
 WIDTH, HEIGHT = 1500, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -153,6 +155,7 @@ bg_offset_y = 0
 
 def main_menu():
     global bg_offset_x, bg_offset_y
+    audio.PlayMusic()
     while True:
         dt = clock.tick(60) / 100  # delta time in seconds
         

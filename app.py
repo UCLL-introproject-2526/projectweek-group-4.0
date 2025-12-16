@@ -176,7 +176,6 @@ current_lives = 3
 
 # The main function that controls the game
 def main():
-    audio.PlayMusic()
     looping = True
     startpos = 600
     xpos = startpos
