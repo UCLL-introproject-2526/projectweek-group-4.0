@@ -161,7 +161,7 @@ anim = Animations()
 
 audio = Audio(volume=1.0)
 
-shart_y_spawn_pos = 600
+shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
