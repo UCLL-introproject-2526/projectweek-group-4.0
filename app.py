@@ -223,15 +223,15 @@ def spawn_boat():
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
-
+    
     if current_time - last_time_cannonball_timer >= 900:
-        shark = Shark(3, 600 , 200)
+        shark = Shark(3, xpos , 200)
         active_cannonballs_list.append(shark)
 
         last_time_cannonball_timer = current_time
 
     for cannonball in active_cannonballs_list:
-        cannonball_pos = WINDOW.blit(canonball_sprite.get_sprite(), (xpos, cannonball.get_next_frame()[1]))
+        cannonball_pos = WINDOW.blit(canonball_sprite.get_sprite(), (cannonball.get_next_frame()[0], cannonball.get_next_frame()[1]))
 
         index = 0
         for sharkpos in sharkpos_list:
