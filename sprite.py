@@ -10,3 +10,6 @@ class Sprite:
 
     def get_sprite(self):
         return self.player_img
+    
+    def rotate_sprite(self):
+        self.player_img = pygame.transform.rotate(self.player_img, 180)

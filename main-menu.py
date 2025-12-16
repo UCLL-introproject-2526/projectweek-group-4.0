@@ -1,13 +1,14 @@
 import pygame
 import sys
+from app import main
 
 # Initialize pygame
 pygame.init()
 
 # Screen settings
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Drunken Sailor")
 
 # Colors
 WHITE = (255, 255, 255)
@@ -46,7 +47,7 @@ def main_menu():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print("Start Game")  # replace with game loop later
+                    main()  # replace with game loop later
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
