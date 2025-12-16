@@ -172,27 +172,12 @@ def main():
 
         draw_window(xpos)
 
-<<<<<<< HEAD
-def draw_window(xpos):
-    global last_time_shark_timer 
-=======
 def draw_window(xpos, currentanim_index):
     global last_time 
->>>>>>> 7a86333fcf1f59ab0a0a8ad14b0ebe0a8a771e96
     WINDOW.fill(BACKGROUND)
 
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
-<<<<<<< HEAD
-    boat_pos = spawn_boat()
-    anim.handle_animations()
-    player_sprite = anim.get_player_img()
-    WINDOW.blit(player_sprite, (xpos, 200))
-    current_time = pygame.time.get_ticks()
-
-
-    shark_spawner(boat_pos, current_time, xpos)
-=======
     spawn_boat()
     player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
     currentanim_index += 1
@@ -201,7 +186,6 @@ def draw_window(xpos, currentanim_index):
     animate_sailor(xpos, plater_sprites[currentanim_index])
     
     shark_spawner(player_pos)
->>>>>>> 7a86333fcf1f59ab0a0a8ad14b0ebe0a8a771e96
     pygame.display.update()
     fpsClock.tick(FPS)
 
@@ -264,10 +248,6 @@ def animate_sailor(xpos, currentSprite):
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7a86333fcf1f59ab0a0a8ad14b0ebe0a8a771e96
 if __name__ == "__main__":
   main()
 
