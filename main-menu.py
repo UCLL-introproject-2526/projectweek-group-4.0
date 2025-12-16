@@ -26,14 +26,20 @@ logo_sprite = Sprite(
 )
 logo_image = logo_sprite.get_sprite()
 
+board_start_game_sprite = Sprite(
+    "Assets/Sprites/board_start_game.png",
+    200,
+    50
+)
+board_start_game_image = board_start_game_sprite.get_sprite()
 # Text surfaces
 logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
-start_text = MENU_FONT.render("Press ENTER to Start", True, BLACK)
+#start_text = MENU_FONT.render("Press ENTER to Start", True, BLACK)
 quit_text = MENU_FONT.render("Press ESC to Quit", True, BLACK)
 
 # Text positions
 #title_rect = title_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
-start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
+start_rect = board_start_game_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
 quit_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 
 # Clock
@@ -76,7 +82,7 @@ def main_menu():
 
         # Draw text
         screen.blit(logo_image, logo_rect)
-        screen.blit(start_text, start_rect)
+        screen.blit(board_start_game_image, start_rect)
         screen.blit(quit_text, quit_rect)
 
         for event in pygame.event.get():
@@ -86,7 +92,7 @@ def main_menu():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    main()  # replace with game loop later
+                    return  # replace with game loop later
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
@@ -98,3 +104,4 @@ def main_menu():
 
 # Run menu
 main_menu()
+main()
