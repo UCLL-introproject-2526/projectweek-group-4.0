@@ -157,7 +157,7 @@ shark_sprite.rotate_sprite()
 
 anim = Animations()
 
-shart_y_spawn_pos = 600
+shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
@@ -167,6 +167,8 @@ active_cannonballs_list = []
 last_time_shark_timer = 0
 last_time_cannonball_timer = 0
 shark_spawn_delay = 3000
+
+current_lives = 3
 
 # The main function that controls the game
 def main():
@@ -262,13 +264,20 @@ def shark_spawner(boat_pos, current_time, xpos):
 
     shark_pos_list = []
 
+    global current_lives
+
     for shark in active_sharks_list:
         shark_pos = WINDOW.blit(anim.get_shark_img(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
-        shark_pos_list.append(shark_pos)
         
         if boat_pos.colliderect(shark_pos):
-             pygame.quit()
-             sys.exit()
+            current_lives -= 1
+            active_sharks_list.remove(shark)
+            if current_lives <= 0:
+                pygame.quit()
+                sys.exit() 
+
+        shark_pos_list.append(shark_pos)
+
 
     cannon_ball_spawner(shark_pos_list, current_time, xpos)
 
