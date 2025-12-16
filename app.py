@@ -61,8 +61,10 @@ BACKGROUND_IMAGE = Background(
 # Sprites
 sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
-boat_sprite = Sprite("Assets/Sprites/Boat.png", 100, 162)
+boat_sprite = Sprite("Assets/Sprites/Boat.png", 706, 272)
 shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
+canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
+canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
 shark_sprite.rotate_sprite()
 
 plater_sprites = [sailor_idle, sailor_anim1]
@@ -91,12 +93,12 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == K_a:
+                if event.key == K_a or event.key== K_LEFT or event.key== K_q:
                     if xpos > startpos - movementAmount:
                         xpos -= movementAmount
-                if event.key == K_d:
+                if event.key == K_d or event.key== K_RIGHT:
                     if xpos < startpos + movementAmount:
-                        xpos += movementAmount
+                        xpos += movementAmount 
 
         draw_window(xpos, currentanim_index)
 
@@ -106,15 +108,25 @@ def draw_window(xpos, currentanim_index):
 
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
-
+    spawn_boat()
     player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
     currentanim_index += 1
     if currentanim_index >= len(plater_sprites):
         currentanim_index = 0
     animate_sailor(xpos, plater_sprites[currentanim_index])
+    
     shark_spawner(player_pos)
     pygame.display.update()
     fpsClock.tick(FPS)
+
+
+def spawn_boat():
+    WINDOW.blit(boat_sprite.get_sprite(), (300, 100))
+    WINDOW.blit(canon_sprite.get_sprite(), (300, 100))
+    WINDOW.blit(canon_sprite.get_sprite(), (600, 100))
+    WINDOW.blit(canon_sprite.get_sprite(), (900, 100))
+
+
 
 
 def shark_spawner(player_pos):
