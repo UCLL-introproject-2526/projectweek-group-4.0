@@ -112,7 +112,7 @@ def draw_window(xpos, currentanim_index):
 
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
-    spawn_boat()
+    boat_pos = spawn_boat()
     player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
     currentanim_index += 1
     if currentanim_index >= len(plater_sprites):
@@ -121,22 +121,25 @@ def draw_window(xpos, currentanim_index):
     current_time = pygame.time.get_ticks()
 
 
-    shark_spawner(player_pos, current_time, xpos)
+    shark_spawner(boat_pos, current_time, xpos)
     pygame.display.update()
     fpsClock.tick(FPS)
 
 
 def spawn_boat():
-    WINDOW.blit(boat_sprite.get_sprite(), (300, 130))
+    boat_pos = WINDOW.blit(boat_sprite.get_sprite(), (300, 130))
     WINDOW.blit(canon_sprite.get_sprite(), (300, 225))
     WINDOW.blit(canon_sprite.get_sprite(), (600, 225))
     WINDOW.blit(canon_sprite.get_sprite(), (900, 225))
+
+    boat_pos.y -= 100
+    return boat_pos
 
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
 
-    if current_time - last_time_cannonball_timer >= 600:
+    if current_time - last_time_cannonball_timer >= 900:
         shark = Shark(3, 600 , 200)
         active_cannonballs_list.append(shark)
 
@@ -154,7 +157,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
 
 
 
-def shark_spawner(player_pos, current_time, xpos):
+def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
     global shark_spawn_delay
 
@@ -177,8 +180,8 @@ def shark_spawner(player_pos, current_time, xpos):
     for shark in active_sharks_list:
         shark_pos = WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
         shark_pos_list.append(shark_pos)
-
-        if player_pos.colliderect(shark_pos):
+        
+        if boat_pos.colliderect(shark_pos):
              pygame.quit()
              sys.exit()
 
@@ -188,6 +191,44 @@ def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
+
+
+# class Animations:
+    
+#     def __init__(self):
+#         self.drinktimer = 0
+#         self.sharktimer = 0
+#         self.idletimer = 0
+#         self.idle_sprite = 0
+#         self.player_idle = True
+#         self.shark_sprite = 0
+
+#     def handle_animations():
+
+#         if idletimer <= 0 and player_idle:
+#             idletimer = 0.5 #seconds
+#             if idle_sprite == 0:
+#                 idle_sprite = 1
+#             elif idle_sprite == 1:
+#                 idle_sprite = 0
+#         #DRINKING ANIMATION
+#     if drinktimer <= 0:
+#       player_idle = True
+#     elif drinktimer >= 0.4:
+#       drink1 = pygame.image.load("Assets/Sprites/Sailor/player_drinking_1.png").convert_alpha()
+#       drink1 = pygame.transform.scale(drink1, (100, 162))
+#       player_img = drink1
+#     elif drinktimer >= 0.25 and drinktimer < 0.4:
+#       drink2 = pygame.image.load("Assets/Sprites/Sailor/player_drinking_2.png").convert_alpha()
+#       drink2 = pygame.transform.scale(drink2, (100, 162))
+#       player_img = drink2
+#     #SHARK ANIMATION
+#     if sharktimer <= 0:
+#       if shark_sprite >= len(Shark_sprites):
+#             shark_sprite = 0
+#       shark_img = Shark_sprites[shark_sprite]
+#       shark_sprite += 1
+#       sharktimer = 0.1 #seconds
 
 if __name__ == "__main__":
   main()
