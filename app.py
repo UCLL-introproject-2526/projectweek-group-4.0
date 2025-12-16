@@ -290,15 +290,6 @@ def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
-
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 7a86333fcf1f59ab0a0a8ad14b0ebe0a8a771e96
->>>>>>> b4912cc9c6766f7fbe6878abd77de45eac22b9e7
 if __name__ == "__main__":
   main()
 
