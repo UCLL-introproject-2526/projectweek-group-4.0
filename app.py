@@ -35,7 +35,25 @@ class Animations:
         self.__drinking1 = Sprite("Assets/Sprites/player_drinking_1.png", 50, 81)
         self.__drinking2 = Sprite("Assets/Sprites/player_drinking_2.png", 50, 81)
 
+        self.shark1 = Sprite("Assets/Sprites/shark_swim_1.png", 100, 162)
+        self.shark1.rotate_sprite()
+        self.shark2 = Sprite("Assets/Sprites/shark_swim_2.png", 100, 162)
+        self.shark2.rotate_sprite()
+        self.shark3 = Sprite("Assets/Sprites/shark_swim_3.png", 100, 162)
+        self.shark3.rotate_sprite()
+        self.shark4 = Sprite("Assets/Sprites/shark_swim_4.png", 100, 162)
+        self.shark4.rotate_sprite()
+        self.shark5 = Sprite("Assets/Sprites/shark_swim_5.png", 100, 162)
+        self.shark5.rotate_sprite()
+        self.shark6 = Sprite("Assets/Sprites/shark_swim_6.png", 100, 162)
+        self.shark6.rotate_sprite()
+
+
+        self.__shark_sprites_list = [self.shark1, self.shark2, self.shark3, self.shark4, self.shark5, self.shark6]
+
+
         self.__player_image = self.__idle1
+        self.__shark_image = self.shark1
 
     def start_drink_anim(self):
         self.__player_idle = False
@@ -60,13 +78,13 @@ class Animations:
         elif self.__drinktimer >= 0.25 and self.__drinktimer < 0.4:
              self.__player_image = self.__drinking2
 
-        # #SHARK ANIMATION
-        # if sharktimer <= 0:
-        #     if shark_sprite >= len(Shark_sprites):
-        #         shark_sprite = 0
-        #     Shark_sprites[shark_sprite]
-        #     shark_sprite += 1
-        #     sharktimer = 0.1 #seconds
+        #SHARK ANIMATION
+        if self.__sharktimer <= 0:
+            if self.__shark_sprite >= len(self.__shark_sprites_list):
+                self.__shark_sprite = 0
+            self.__shark_image = self.__shark_sprites_list[self.__shark_sprite]
+            self.__shark_sprite += 1
+            self.__sharktimer = 0.1 #seconds
 
         self.__dt = self.__clock.tick(60.0) / 1000.0
         self.__drinktimer -= self.__dt
@@ -79,6 +97,10 @@ class Animations:
 
     def get_player_img(self):
         return self.__player_image.get_sprite()
+    
+    def get_shark_img(self):
+        return self.__shark_image.get_sprite()
+
 
 
 class Shark:
@@ -241,7 +263,7 @@ def shark_spawner(boat_pos, current_time, xpos):
     shark_pos_list = []
 
     for shark in active_sharks_list:
-        shark_pos = WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+        shark_pos = WINDOW.blit(anim.get_shark_img(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
         shark_pos_list.append(shark_pos)
         
         if boat_pos.colliderect(shark_pos):
