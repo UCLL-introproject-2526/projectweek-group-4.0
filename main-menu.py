@@ -22,10 +22,58 @@ logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
 
 board_start_game_sprite = Sprite("Assets/Sprites/board_start_game.png", 200, 50)
 board_start_game_image = board_start_game_sprite.get_sprite()
-start_rect = board_start_game_image.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
 
-quit_text = MENU_FONT.render("Press ESC to Quit", True, BLACK)
-quit_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
+logo_sprite = Sprite(
+    "Assets/Sprites/oficial_logo_inv.png",
+    600,   # width
+    400    # height
+)
+logo_image = logo_sprite.get_sprite()
+
+board_start_game_sprite = Sprite(
+    "Assets/Sprites/board_start_game.png",
+    450,
+    100
+)
+board_start_game_image = board_start_game_sprite.get_sprite()
+
+board_options_sprite = Sprite(
+    "Assets/Sprites/options.png",
+    450,
+    100
+)
+board_options_image = board_options_sprite.get_sprite()
+
+board_quit_sprite = Sprite(
+    "Assets/Sprites/quit.png",
+    450,
+    100
+)
+board_quit_image = board_quit_sprite.get_sprite()
+# Text surfaces
+logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+#start_text = MENU_FONT.render("Press ENTER to Start", True, BLACK)
+#quit_text = MENU_FONT.render("Press ESC to Quit", True, BLACK)
+
+# Text positions
+#title_rect = title_text.get_rect(center=(WIDTH // 2, HEIGHT // 3))
+BUTTON_Y_START = HEIGHT // 2 + 150
+BUTTON_SPACING = 125
+
+start_rect = board_start_game_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START)
+)
+
+options_rect = board_options_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
+)
+
+quit_rect = board_quit_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING * 2)
+)
+
+
+
 
 clock = pygame.time.Clock()
 
@@ -54,29 +102,74 @@ class Background:
 
 BACKGROUND_IMAGE = Background("Assets/background/background3.png", (450, 250))
 
+HOVER_SCALE = 1.08
+HOVER_TIME = 0.7  # seconds
+
+buttons = {
+    "start": {
+        "image": board_start_game_image,
+        "rect": start_rect,
+        "scale": 1.0,
+    },
+    "options": {
+        "image": board_options_image,
+        "rect": options_rect,
+        "scale": 1.0,
+    },
+    "quit": {
+        "image": board_quit_image,
+        "rect": quit_rect,
+        "scale": 1.0,
+    }
+}
+
+def draw_hover_button(screen, button, dt):
+    target_scale = HOVER_SCALE if button["rect"].collidepoint(pygame.mouse.get_pos()) else 1.0
+
+    # Smooth interpolation
+    scale_speed = (HOVER_SCALE - 1.0) / HOVER_TIME
+    if button["scale"] < target_scale:
+        button["scale"] = min(button["scale"] + scale_speed * dt, target_scale)
+    elif button["scale"] > target_scale:
+        button["scale"] = max(button["scale"] - scale_speed * dt, target_scale)
+
+    image = button["image"]
+    w, h = image.get_size()
+    scaled_image = pygame.transform.smoothscale(
+        image,
+        (int(w * button["scale"]), int(h * button["scale"]))
+    )
+
+    rect = scaled_image.get_rect(center=button["rect"].center)
+    screen.blit(scaled_image, rect)
+
 def main_menu():
     while True:
+        dt = clock.tick(60) / 100  # delta time in seconds
+
         BACKGROUND_IMAGE.render(screen)
         screen.blit(logo_image, logo_rect)
-        screen.blit(board_start_game_image, start_rect)
-        screen.blit(quit_text, quit_rect)
+
+        draw_hover_button(screen, buttons["start"], dt)
+        draw_hover_button(screen, buttons["options"], dt)
+        draw_hover_button(screen, buttons["quit"], dt)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    main()
-                elif event.key == pygame.K_ESCAPE:
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if buttons["start"]["rect"].collidepoint(event.pos):
+                    return
+                elif buttons["options"]["rect"].collidepoint(event.pos):
+                    print("Options clicked")
+                elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if start_rect.collidepoint(event.pos):
-                    main()
 
         pygame.display.flip()
         clock.tick(60)
 
-if __name__ == "__main__":
-   main_menu()
+main_menu()
+main()
