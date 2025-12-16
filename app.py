@@ -2,6 +2,7 @@
 import pygame, sys, random
 from pygame.locals import *
 from sprite import Sprite
+from audio import Audio
 
 pygame.init()
  
@@ -56,6 +57,7 @@ class Animations:
         self.__shark_image = self.shark1
 
     def start_drink_anim(self):
+        audio.Drink()
         self.__player_idle = False
         self.__drinktimer = 0.55
 
@@ -157,6 +159,8 @@ shark_sprite.rotate_sprite()
 
 anim = Animations()
 
+audio = Audio(volume=1.0)
+
 shart_y_spawn_pos = 600
 shark_x_spawn_pos_list = [300, 600, 900]
 
@@ -170,6 +174,7 @@ shark_spawn_delay = 3000
 
 # The main function that controls the game
 def main():
+    audio.PlayMusic()
     looping = True
     startpos = 600
     xpos = startpos
@@ -193,27 +198,12 @@ def main():
 
         draw_window(xpos)
 
-<<<<<<< HEAD
-def draw_window(xpos, currentanim_index):
-    global last_time 
-=======
 def draw_window(xpos):
     global last_time_shark_timer 
->>>>>>> refs/remotes/origin/main
     WINDOW.fill(BACKGROUND)
 
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
-<<<<<<< HEAD
-    spawn_boat()
-    player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
-    currentanim_index += 1
-    if currentanim_index >= len(plater_sprites):
-        currentanim_index = 0
-    animate_sailor(xpos, plater_sprites[currentanim_index])
-    
-    shark_spawner(player_pos)
-=======
     boat_pos = spawn_boat()
     anim.handle_animations()
     player_sprite = anim.get_player_img()
@@ -222,7 +212,6 @@ def draw_window(xpos):
 
 
     shark_spawner(boat_pos, current_time, xpos)
->>>>>>> refs/remotes/origin/main
     pygame.display.update()
     fpsClock.tick(FPS)
 
@@ -243,7 +232,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     if current_time - last_time_cannonball_timer >= 900:
         shark = Shark(3, xpos , 200)
         active_cannonballs_list.append(shark)
-
+        audio.Fire()
         last_time_cannonball_timer = current_time
 
     for cannonball in active_cannonballs_list:
@@ -293,10 +282,6 @@ def animate_sailor(xpos, currentSprite):
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/main
 if __name__ == "__main__":
   main()
 
