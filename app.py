@@ -20,6 +20,30 @@ WINDOW_HEIGHT = 1000
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('My Game!')
 
+# --- Score systeem ---
+SCORE_FONT = pygame.font.Font(None, 48)
+score = 0
+high_score = 0
+
+def reset_score():
+    global score
+    score = 0
+
+def add_kill(points=100):
+    """Tel score bij voor een haai kill."""
+    global score
+    score += points
+
+def draw_score(surface):
+    """Toon huidige score linksboven."""
+    score_surf = SCORE_FONT.render(f"Score: {score}", True, (0, 0, 0))
+    surface.blit(score_surf, (20, 20))
+
+def update_high_score():
+    global high_score, score
+    if score > high_score:
+        high_score = score
+
 class Shark:
     def __init__(self, ypos_increment, xpos, ypos):
         self.ypos_increment = ypos_increment
@@ -29,6 +53,7 @@ class Shark:
     def get_next_frame(self):
         self.__ypos += self.ypos_increment
         return (self.__xpos, self.__ypos)
+    
 
 # === ADD: Background class ===
 class Background:
@@ -111,7 +136,6 @@ def draw_window(xpos, currentanim_index):
     global last_time 
     WINDOW.fill(BACKGROUND)
 
-    # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
     spawn_boat()
     player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
@@ -154,6 +178,7 @@ def shark_spawner(player_pos):
         active_sharks_list.append(shark)
         last_time = current_time
 
+
     # Beweging + collision
     for shark in active_sharks_list:
         shark_pos = WINDOW.blit(
@@ -181,6 +206,7 @@ def shark_spawner(player_pos):
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
+
 
 
 if __name__ == "__main__":
