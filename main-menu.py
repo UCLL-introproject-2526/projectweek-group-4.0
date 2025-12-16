@@ -175,7 +175,6 @@ def main_menu():
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if buttons["start"]["rect"].collidepoint(event.pos):
-                    audio.StopMusic()
                     return
                 elif buttons["options"]["rect"].collidepoint(event.pos):
                     print("Options clicked")
