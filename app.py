@@ -243,6 +243,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
         index = 0
         for sharkpos in sharkpos_list:
             if sharkpos.colliderect(cannonball_pos):
+                active_cannonballs_list.remove(cannonball)
                 sharkpos_list.pop(index)
                 active_sharks_list.pop(index)
             index += 1
