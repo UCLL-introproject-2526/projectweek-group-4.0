@@ -6,7 +6,7 @@ from sprite import Sprite
 
 pygame.init()
 
-WIDTH, HEIGHT = 1200, 1000
+WIDTH, HEIGHT = 1280, 300
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Drunken Sailor")
 
