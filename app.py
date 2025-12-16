@@ -15,6 +15,16 @@ WINDOW_HEIGHT = 1000
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('My Game!')
 
+class Shark:
+    def __init__(self, ypos_increment, xpos, ypos):
+        self.ypos_increment = ypos_increment
+        self.__xpos = xpos
+        self.__ypos = ypos
+
+    def get_next_frame(self):
+        self.__ypos += self.ypos_increment
+        return (self.__xpos, self.__ypos)
+
 # === ADD: Background class ===
 class Background:
     """Loads and renders a static background image."""
@@ -46,8 +56,15 @@ BACKGROUND_IMAGE = Background(
 # Sprites
 sailor_idle = Sprite("Assets/Sprites/Sailor.png")
 sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png")
+boat_sprite = Sprite("Assets/Sprites/Boat.png")
+shark_sprite = Sprite("Assets/Sprites/Shark.png")
 
 plater_sprites = [sailor_idle, sailor_anim1]
+
+shart_y_spawn_pos = 600
+shark_x_spawn_pos_list = [300, 600, 900]
+
+active_sharks_list = []
 
 # The main function that controls the game
 def main():
@@ -85,12 +102,24 @@ def draw_window(xpos, currentanim_index):
     if currentanim_index >= len(plater_sprites):
         currentanim_index = 0
     animate_sailor(xpos, plater_sprites[currentanim_index])
+    shark_spawner()
     pygame.display.update()
     fpsClock.tick(FPS)
+
+
+def shark_spawner():
+    random_int = random.randint(0, 1000)
+    if random_int < 10:
+        shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+        active_sharks_list.append(shark)
+    for shark in active_sharks_list:
+        WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+
 
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
 
 main()
+
 
