@@ -27,30 +27,35 @@ class Shark:
 
 # === ADD: Background class ===
 class Background:
-    """Loads and renders a static background image."""
-    def __init__(self, path: str, target_size: tuple[int, int]):
+    """Loads and tiles a seamless background image."""
+    def __init__(self, path: str, tile_size: tuple[int, int]):
         self._path = path
-        self._target_size = target_size
-        self._image = self._create_image()
+        self._tile_size = tile_size
+        self._tile = self._load_tile()
 
-    def _create_image(self) -> pygame.Surface:
+    def _load_tile(self) -> pygame.Surface:
         try:
             img = pygame.image.load(self._path).convert_alpha()
-            img = pygame.transform.smoothscale(img, self._target_size)
+            img = pygame.transform.smoothscale(img, self._tile_size)
             return img
         except Exception as e:
             print(f"[WARN] Could not load background ({self._path}): {e}")
-            surf = pygame.Surface(self._target_size)
+            surf = pygame.Surface(self._tile_size)
             surf.fill(BACKGROUND)
             return surf
 
     def render(self, surface: pygame.Surface):
-        surface.blit(self._image, (0, 0))
+        tile_w, tile_h = self._tile.get_size()
+        screen_w, screen_h = surface.get_size()
+
+        for x in range(0, screen_w, tile_w):
+            for y in range(0, screen_h, tile_h):
+                surface.blit(self._tile, (x, y))
 
 # === ADD: Create background instance ===
 BACKGROUND_IMAGE = Background(
-    path="image.png",  # Change this to your actual image path
-    target_size=(WINDOW_WIDTH, WINDOW_HEIGHT)
+    path="Assets/background/background3.png",
+    tile_size=(450, 250)  # smaller = more repeats
 )
 
 # Sprites
