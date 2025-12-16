@@ -2,6 +2,7 @@
 import pygame, sys, random
 from pygame.locals import *
 from sprite import Sprite
+from audio import Audio
 
 pygame.init()
  
@@ -56,6 +57,7 @@ class Animations:
         self.__shark_image = self.shark1
 
     def start_drink_anim(self):
+        audio.Drink()
         self.__player_idle = False
         self.__drinktimer = 0.55
 
@@ -157,7 +159,9 @@ shark_sprite.rotate_sprite()
 
 anim = Animations()
 
-shart_y_spawn_pos = 800
+audio = Audio(volume=1.0)
+
+shart_y_spawn_pos = 600
 shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
@@ -172,6 +176,7 @@ current_lives = 3
 
 # The main function that controls the game
 def main():
+    audio.PlayMusic()
     looping = True
     startpos = 600
     xpos = startpos
@@ -229,7 +234,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     if current_time - last_time_cannonball_timer >= 900:
         shark = Shark(3, xpos , 200)
         active_cannonballs_list.append(shark)
-
+        audio.Fire()
         last_time_cannonball_timer = current_time
 
     for cannonball in active_cannonballs_list:
@@ -284,7 +289,6 @@ def shark_spawner(boat_pos, current_time, xpos):
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
-
 
 
 if __name__ == "__main__":
