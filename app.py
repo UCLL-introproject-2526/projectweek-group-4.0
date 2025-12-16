@@ -105,23 +105,19 @@ def draw_window(xpos, currentanim_index):
     if currentanim_index >= len(plater_sprites):
         currentanim_index = 0
     animate_sailor(xpos, plater_sprites[currentanim_index])
-
-    current_time = pygame.time.get_ticks()
-
-    if current_time - last_time >= shark_spawn_delay:
-        last_time = current_time
-        shark_spawner()
-
-
+    shark_spawner()
     pygame.display.update()
     fpsClock.tick(FPS)
 
 
 def shark_spawner():
-    random_int = random.randint(0, 1000)
-    if random_int < 10:
+    current_time = pygame.time.get_ticks()
+    global last_time
+    if current_time - last_time >= shark_spawn_delay:
+        last_time = current_time
         shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
+
     for shark in active_sharks_list:
         WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
 
