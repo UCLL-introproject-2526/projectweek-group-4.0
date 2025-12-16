@@ -134,7 +134,7 @@ def spawn_boat():
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
 
-    if current_time - last_time_cannonball_timer >= 300:
+    if current_time - last_time_cannonball_timer >= 600:
         shark = Shark(3, 600 , 200)
         active_cannonballs_list.append(shark)
 
