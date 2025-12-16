@@ -2,6 +2,7 @@
 import pygame, sys, random
 from pygame.locals import *
 from sprite import Sprite
+
 pygame.init()
  
 # Colours
@@ -61,7 +62,7 @@ BACKGROUND_IMAGE = Background(
 # Sprites
 sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
-boat_sprite = Sprite("Assets/Sprites/Boat.png", 706, 272)
+boat_sprite = Sprite("Assets/Sprites/Boat.png", 720, 290)
 shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
 canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
 canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
@@ -126,10 +127,11 @@ def draw_window(xpos, currentanim_index):
 
 
 def spawn_boat():
-    WINDOW.blit(boat_sprite.get_sprite(), (300, 100))
-    WINDOW.blit(canon_sprite.get_sprite(), (300, 100))
-    WINDOW.blit(canon_sprite.get_sprite(), (600, 100))
-    WINDOW.blit(canon_sprite.get_sprite(), (900, 100))
+    WINDOW.blit(boat_sprite.get_sprite(), (300, 130))
+    WINDOW.blit(canon_sprite.get_sprite(), (300, 225))
+    WINDOW.blit(canon_sprite.get_sprite(), (600, 225))
+    WINDOW.blit(canon_sprite.get_sprite(), (900, 225))
+
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
