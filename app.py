@@ -59,10 +59,10 @@ BACKGROUND_IMAGE = Background(
 )
 
 # Sprites
-sailor_idle = Sprite("Assets/Sprites/Sailor.png")
-sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png")
-boat_sprite = Sprite("Assets/Sprites/Boat.png")
-shark_sprite = Sprite("Assets/Sprites/Shark.png")
+sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
+sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
+boat_sprite = Sprite("Assets/Sprites/Boat.png", 100, 162)
+shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
 shark_sprite.rotate_sprite()
 
 plater_sprites = [sailor_idle, sailor_anim1]
@@ -78,9 +78,9 @@ shark_spawn_delay = 3000
 # The main function that controls the game
 def main():
     looping = True
-    startpos = 550
+    startpos = 600
     xpos = startpos
-    movementAmount = 120
+    movementAmount = 300
 
     currentanim_index = 0
     # The main game loop
