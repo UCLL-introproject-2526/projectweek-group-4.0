@@ -66,6 +66,9 @@ shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
 
+last_time = 0
+shark_spawn_delay = 6
+
 # The main function that controls the game
 def main():
     looping = True
@@ -102,7 +105,14 @@ def draw_window(xpos, currentanim_index):
     if currentanim_index >= len(plater_sprites):
         currentanim_index = 0
     animate_sailor(xpos, plater_sprites[currentanim_index])
-    shark_spawner()
+
+    current_time = pygame.time.get_ticks()
+
+    if current_time - last_time >= shark_spawn_delay:
+        last_time = current_time
+        shark_spawner()
+
+
     pygame.display.update()
     fpsClock.tick(FPS)
 
