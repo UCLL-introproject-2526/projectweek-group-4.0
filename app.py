@@ -2,6 +2,10 @@
 import pygame, sys, random
 from pygame.locals import *
 from sprite import Sprite
+from game_over import render_game_over, wait_for_quit_or_restart
+from game_over import render_game_over
+
+
 
 pygame.init()
  
@@ -131,13 +135,13 @@ def spawn_boat():
 
 
 
+
 def shark_spawner(player_pos):
     current_time = pygame.time.get_ticks()
     global last_time
     global shark_spawn_delay
 
-    
-
+    # Spawn-timing
     if current_time - last_time >= shark_spawn_delay:
         if shark_spawn_delay < 250:
             shark_spawn_delay = shark_spawn_delay
@@ -146,17 +150,33 @@ def shark_spawner(player_pos):
         else:
             shark_spawn_delay -= 100
 
-        
-        shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+        shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) - 1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
         last_time = current_time
 
+    # Beweging + collision
     for shark in active_sharks_list:
-        shark_pos = WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
-       
+        shark_pos = WINDOW.blit(
+            shark_sprite.get_sprite(),
+            (shark.get_next_frame()[0], shark.get_next_frame()[1])
+        )
+
         if player_pos.colliderect(shark_pos):
-             pygame.quit()
-             sys.exit()
+            # Toon game-over scherm in plaats van direct quitten
+            render_game_over(WINDOW, "Game Over! De haai raakte de boot.")
+            pygame.display.update()
+
+            action = wait_for_quit_or_restart()
+            if action == 'quit':
+                pygame.quit()
+                sys.exit()
+            elif action == 'restart':
+                # Reset basis-variabelen en start opnieuw
+                active_sharks_list.clear()
+                
+                last_time = 0
+                shark_spawn_delay = 3000
+
 
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)

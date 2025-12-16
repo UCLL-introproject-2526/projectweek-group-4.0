@@ -47,7 +47,7 @@ def wait_for_quit_or_restart() -> str:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return 'quit'
-                if event.key == pygame.K_RETURN:
+                if event.key == pygame.K_r:
                     return 'restart'
-        pygame.time.delay()
+        
     
