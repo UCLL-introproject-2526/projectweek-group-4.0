@@ -6,8 +6,8 @@ from sprite import Sprite
 
 pygame.init()
 
-window = pygame.display.set_mode((0, 0), pygame.NOFRAME)
-WIDTH, HEIGHT = window.get_size()
+
+WIDTH, HEIGHT = 1500, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Drunken Sailor")
 
@@ -93,12 +93,17 @@ class Background:
             surf.fill(BACKGROUND)
             return surf
 
-    def render(self, surface: pygame.Surface):
+    def render(self, surface: pygame.Surface, offset_x=0, offset_y=0):
         tile_w, tile_h = self._tile.get_size()
         screen_w, screen_h = surface.get_size()
-        for x in range(0, screen_w, tile_w):
-            for y in range(0, screen_h, tile_h):
-                surface.blit(self._tile, (x, y))
+
+        offset_x = int(offset_x) % tile_w
+        offset_y = int(offset_y) % tile_h
+
+        for x in range(-tile_w, screen_w + tile_w, tile_w):
+            for y in range(-tile_h, screen_h + tile_h, tile_h):
+                surface.blit(self._tile, (x + offset_x, y + offset_y))
+
 
 BACKGROUND_IMAGE = Background("Assets/background/background3.png", (450, 250))
 
@@ -143,11 +148,17 @@ def draw_hover_button(screen, button, dt):
     rect = scaled_image.get_rect(center=button["rect"].center)
     screen.blit(scaled_image, rect)
 
+bg_offset_x = 0
+bg_offset_y = 0
+
 def main_menu():
+    global bg_offset_x, bg_offset_y
     while True:
         dt = clock.tick(60) / 100  # delta time in seconds
-
-        BACKGROUND_IMAGE.render(screen)
+        
+      # vertical drift
+        bg_offset_x += 2 * dt 
+        BACKGROUND_IMAGE.render(screen, bg_offset_x, bg_offset_y)
         screen.blit(logo_image, logo_rect)
 
         draw_hover_button(screen, buttons["start"], dt)
