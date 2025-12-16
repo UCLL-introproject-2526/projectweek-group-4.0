@@ -58,6 +58,7 @@ sailor_idle = Sprite("Assets/Sprites/Sailor.png")
 sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png")
 boat_sprite = Sprite("Assets/Sprites/Boat.png")
 shark_sprite = Sprite("Assets/Sprites/Shark.png")
+shark_sprite.rotate_sprite()
 
 plater_sprites = [sailor_idle, sailor_anim1]
 
@@ -101,29 +102,42 @@ def draw_window(xpos, currentanim_index):
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(WINDOW)
 
-    WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
+    player_pos = WINDOW.blit(sailor_idle.get_sprite(), (xpos, 200))
     currentanim_index += 1
     if currentanim_index >= len(plater_sprites):
         currentanim_index = 0
     animate_sailor(xpos, plater_sprites[currentanim_index])
-    shark_spawner()
+    shark_spawner(player_pos)
     pygame.display.update()
     fpsClock.tick(FPS)
 
 
-def shark_spawner():
+def shark_spawner(player_pos):
     current_time = pygame.time.get_ticks()
     global last_time
     global shark_spawn_delay
+
+    
+
     if current_time - last_time >= shark_spawn_delay:
-        shark_spawn_delay -= 100
+        if shark_spawn_delay < 250:
+            shark_spawn_delay = shark_spawn_delay
+        elif shark_spawn_delay < 1000:
+            shark_spawn_delay -= 10
+        else:
+            shark_spawn_delay -= 100
+
+        
         shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
         last_time = current_time
 
     for shark in active_sharks_list:
-        WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
-
+        shark_pos = WINDOW.blit(shark_sprite.get_sprite(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+       
+        if player_pos.colliderect(shark_pos):
+             pygame.quit()
+             sys.exit()
 
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
