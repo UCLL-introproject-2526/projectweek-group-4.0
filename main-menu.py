@@ -4,7 +4,7 @@ import sys
 from app import main
 from sprite import Sprite
 from audio import Audio
-import options
+from options import options_menu
 
 
 pygame.init()
@@ -179,7 +179,7 @@ def main_menu():
                 if buttons["start"]["rect"].collidepoint(event.pos):
                     return
                 elif buttons["options"]["rect"].collidepoint(event.pos):
-                    options.options_menu(audio)
+                    options_menu(audio)
                 elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()

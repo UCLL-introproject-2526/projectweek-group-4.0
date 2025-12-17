@@ -10,6 +10,7 @@ class Audio:
         self._ambient_music.set_volume(volume)
         self._cannon_fire_sound.set_volume(volume)
         self._drink_sound.set_volume(volume*1.5)
+        self.muted = False
         self.volume = volume
 
     def play(self, loops=0):
@@ -35,12 +36,17 @@ class Audio:
     def Drink(self):
         self._drink_sound.play()
 
+    def _apply_volume(self):
+        vol = 0 if self.muted else self.volume
+        self._main_music.set_volume(vol)
+        self._ambient_music.set_volume(vol)
+        self._cannon_fire_sound.set_volume(vol)
+        self._drink_sound.set_volume(vol * 1.5)
+
     def set_master_volume(self, volume):
-        volume = max(0.0, min(1.0, volume))  # clamp 0–1
+        self.volume = max(0.0, min(1.0, volume))
+        self._apply_volume()
 
-        self._main_music.set_volume(volume)
-        self._ambient_music.set_volume(volume)
-        self._cannon_fire_sound.set_volume(volume)
-        self._drink_sound.set_volume(volume * 1.5)
-
-        self.volume = volume
+    def toggle_mute(self):
+        self.muted = not self.muted
+        self._apply_volume()
