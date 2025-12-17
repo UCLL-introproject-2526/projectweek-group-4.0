@@ -91,7 +91,7 @@ active_cannonballs_list = []
 
 last_time_shark_timer = 0
 last_time_cannonball_timer = 0
-shark_spawn_delay = 3000
+shark_spawn_delay = 2100
 
 current_lives = 3
 
@@ -179,13 +179,16 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global fire_canon
     global last_time_cannonball_timer 
 
-    
+    smoke_animation(xpos , 220)
+
     if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
         fire_canon = False
         cannon_ball = ObjectInstanceData(3, xpos + 25 , 255)
         active_cannonballs_list.append(cannon_ball)
         audio.Fire()
         last_time_cannonball_timer = current_time
+
+        anim.cannon_fire_anim()
 
     for cannonball in active_cannonballs_list:
         cannonball_pos = WINDOW.blit(canonball_sprite.get_sprite(), (cannonball.get_next_frame()[0], cannonball.get_next_frame()[1]))
@@ -201,6 +204,8 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
                 upgrade_system.add_gold(50)
             index += 1
 
+def smoke_animation(x, y):
+    WINDOW.blit(anim.get_smoke_img(), (x, y))
 
 
 def shark_spawner(boat_pos, current_time, xpos):
@@ -214,8 +219,10 @@ def shark_spawner(boat_pos, current_time, xpos):
             shark_spawn_delay = shark_spawn_delay
         elif shark_spawn_delay < 1000:
             shark_spawn_delay -= 10
+        elif shark_spawn_delay < 1600:
+            shark_spawn_delay -= 25
         else:
-            shark_spawn_delay -= 100
+            shark_spawn_delay -= 90
 
         shark = ObjectInstanceData(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
