@@ -17,6 +17,35 @@ BLUE = (60, 140, 220)
 GRAY = (180, 180, 180)
 DARK = (100, 100, 100)
 
+# -------------------- SCROLLING BACKGROUND --------------------
+class ScrollingBackground:
+    def __init__(self, path, tile_size, speed=1.0):
+        self.tile_size = tile_size
+        self.speed = speed
+        self.offset_x = 0
+
+        try:
+            img = pygame.image.load(path).convert_alpha()
+            self.tile = pygame.transform.smoothscale(img, tile_size)
+        except Exception:
+            self.tile = pygame.Surface(tile_size)
+            self.tile.fill((220, 220, 220))
+
+    def render(self, surface):
+        tile_w, tile_h = self.tile_size
+        screen_w, screen_h = surface.get_size()
+
+        # Scroll right to left
+        self.offset_x = (self.offset_x - self.speed) % tile_w
+
+        for x in range(-tile_w, screen_w + tile_w, tile_w):
+            for y in range(0, screen_h + tile_h, tile_h):
+                surface.blit(self.tile, (x - self.offset_x, y))
+
+# Load background (replace with your tileable image path)
+BG_IMAGE = ScrollingBackground("Assets/background/background3.png", (450, 250), speed=0.3)
+
+
 def options_menu(audio):
     global screen
 
@@ -36,7 +65,9 @@ def options_menu(audio):
     screen_offset_y = 560
 
     while True:
-        screen.fill((220, 220, 220))
+        # ----- DRAW SCROLLING BACKGROUND -----
+        BG_IMAGE.render(screen)
+
         WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 
         # ----- TEXT -----
@@ -115,4 +146,3 @@ def options_menu(audio):
 
         pygame.display.flip()
         clock.tick(60)
-
