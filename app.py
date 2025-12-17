@@ -75,11 +75,19 @@ class Animations:
         self.idle_timer = max(0, self.idle_timer - dt)
         self.shark_timer = max(0, self.shark_timer - dt)
 
+<<<<<<< HEAD
 class Shark:
     def __init__(self, speed, x, y):
         self.speed = speed
         self.x = x
         self.y = y
+=======
+class ObjectInstanceData:
+    def __init__(self, ypos_increment, xpos, ypos):
+        self.ypos_increment = ypos_increment
+        self.__xpos = xpos
+        self.__ypos = ypos
+>>>>>>> a3deccad8d56d6eafb179ed17c09103a28650379
 
     def move(self):
         self.y += self.speed
@@ -114,11 +122,76 @@ last_shark_time = 0
 last_ball_time = 0
 spawn_delay =3000
 
+<<<<<<< HEAD
 def draw_score():
     txt = FONT.render(
         f"Score: {hs.get_current()}  High: {hs.get_high()}",
         True,
         BLACK,
+=======
+
+shart_y_spawn_pos = 800
+shark_x_spawn_pos_list = [300, 600, 900]
+
+active_sharks_list = []
+
+active_cannonballs_list = []
+
+last_time_shark_timer = 0
+last_time_cannonball_timer = 0
+shark_spawn_delay = 3000
+
+current_lives = 3
+
+
+fire_canon = False
+# The main function that controls the game
+def main():
+    score_manager.reset_score()
+    looping = True
+    startpos = 600
+    xpos = startpos
+    movementAmount = 300
+    # The main game loop
+    while looping:
+        # Get inputs
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_a or event.key== K_LEFT or event.key== K_q:
+                    if xpos > startpos - movementAmount:
+                        xpos -= movementAmount
+                        anim.start_drink_anim()
+                if event.key == K_d or event.key== K_RIGHT:
+                    if xpos < startpos + movementAmount:
+                        xpos += movementAmount 
+                        anim.start_drink_anim()
+                if event.key == K_SPACE:
+                    global fire_canon
+                    fire_canon = True
+
+        draw_window(xpos)
+
+def draw_window(xpos):
+    global last_time_shark_timer 
+    WINDOW.fill(BACKGROUND)
+
+    # === ADD: Render background ===
+    BACKGROUND_IMAGE.render(WINDOW)
+    boat_pos = spawn_boat()
+    anim.handle_animations()
+    player_sprite = anim.get_player_img()
+    WINDOW.blit(player_sprite, (xpos, 200))
+    current_time = pygame.time.get_ticks()
+
+
+    shark_spawner(boat_pos, current_time, xpos)
+    # ===== SCORE DISPLAY =====
+    score_text = score_font.render(
+        f"Score: {score_manager.current_score}", True, (0, 0, 0)
+>>>>>>> a3deccad8d56d6eafb179ed17c09103a28650379
     )
     WINDOW.blit(txt, (20, 20))
 
@@ -139,15 +212,74 @@ def game_over_screen():
         total = FONT.render(f"Total Points: {hs.get_total()}", True, (255, 255, 255))
         hint = FONT.render("ENTER = Restart | ESC = Quit", True, (180, 180, 180))
 
+<<<<<<< HEAD
         y = 250
         for surf in (title, score, high, total, hint):
             WINDOW.blit(surf, (WINDOW_WIDTH // 2 - surf.get_width() // 2, y))
             y += 70
+=======
+def cannon_ball_spawner(sharkpos_list, current_time, xpos):
+    global fire_canon
+    global last_time_cannonball_timer 
+
+    
+    if current_time - last_time_cannonball_timer >= 900 and fire_canon == True:
+        fire_canon = False
+        cannon_ball = ObjectInstanceData(3, xpos + 25 , 255)
+        active_cannonballs_list.append(cannon_ball)
+        audio.Fire()
+        last_time_cannonball_timer = current_time
+>>>>>>> a3deccad8d56d6eafb179ed17c09103a28650379
 
         pygame.display.update()
 
+<<<<<<< HEAD
         for event in pygame.event.get():
             if event.type == QUIT:
+=======
+        index = 0
+        for sharkpos in sharkpos_list:
+            if sharkpos.colliderect(cannonball_pos):
+                active_cannonballs_list.remove(cannonball)
+                sharkpos_list.pop(index)
+                active_sharks_list.pop(index)
+
+                score_manager.add_score(100)
+            index += 1
+
+
+
+def shark_spawner(boat_pos, current_time, xpos):
+    global last_time_shark_timer
+    global shark_spawn_delay
+
+    
+
+    if current_time - last_time_shark_timer >= shark_spawn_delay:
+        if shark_spawn_delay < 250:
+            shark_spawn_delay = shark_spawn_delay
+        elif shark_spawn_delay < 1000:
+            shark_spawn_delay -= 10
+        else:
+            shark_spawn_delay -= 100
+
+        shark = ObjectInstanceData(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+        active_sharks_list.append(shark)
+        last_time_shark_timer = current_time
+
+    shark_pos_list = []
+
+    global current_lives
+
+    for shark in active_sharks_list:
+        shark_pos = WINDOW.blit(anim.get_shark_img(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+        
+        if boat_pos.colliderect(shark_pos):
+            current_lives -= 1
+            active_sharks_list.remove(shark)
+            if current_lives <= 0:
+                score_manager.save_score()
+>>>>>>> a3deccad8d56d6eafb179ed17c09103a28650379
                 pygame.quit()
                 sys.exit()
 
