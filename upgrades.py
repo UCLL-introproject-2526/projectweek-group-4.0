@@ -49,7 +49,7 @@ class UpgradeSystem:
     def add_gold(self, gold_amount):
         self.__gold_amount += gold_amount
 
-    def upgrade(self):
+    def upgrade(self, anim):
 
         if self.__current_upgrade_index >= len(self.__upgrades):
             return
@@ -62,6 +62,7 @@ class UpgradeSystem:
             self.__gold_amount -= current_upgrade.get_upgrade_gold_cost()
             self.__current_upgrade_index += 1
             self.__current_time_between_cannonfire = current_upgrade.get_time_between_cannonfire()
+            anim.upgrade_particle_anim()
 
     
 

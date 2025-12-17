@@ -124,7 +124,7 @@ def main():
                     global fire_canon
                     fire_canon = True
                 if event.key == K_u or event.key == K_v:
-                    upgrade_system.upgrade()
+                    upgrade_system.upgrade(anim)
 
         draw_window(xpos)
 
@@ -136,6 +136,7 @@ def draw_window(xpos):
     BACKGROUND_IMAGE.render(WINDOW)
     boat_pos = spawn_boat()
     anim.handle_animations()
+    
     player_sprite = anim.get_player_img()
     WINDOW.blit(player_sprite, (xpos, 200))
     current_time = pygame.time.get_ticks()
@@ -180,6 +181,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
 
     smoke_animation(xpos , 220)
+    particle_animation()
 
     if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
         fire_canon = False
@@ -207,6 +209,10 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
 def smoke_animation(x, y):
     WINDOW.blit(anim.get_smoke_img(), (x, y))
 
+def particle_animation():
+    WINDOW.blit(anim.get_upgrade_particle_img(), (250, 180))
+    WINDOW.blit(anim.get_upgrade_particle_img(), (550, 180))
+    WINDOW.blit(anim.get_upgrade_particle_img(), (850, 180))
 
 def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
