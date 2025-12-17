@@ -159,10 +159,11 @@ def draw_window(xpos):
 
 
 def spawn_boat():
-    boat_pos = WINDOW.blit(boat_sprite.get_sprite(), (300, 130))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (300, 225))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (600, 225))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (900, 225))
+    screen_width, screen_height = WINDOW.get_size()
+    boat_pos = WINDOW.blit(boat_sprite.get_sprite(), (screen_width * 0.25, 130))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x, 225))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x + 300, 225))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x + 600, 225))
 
     boat_pos.y -= 100
     return boat_pos
