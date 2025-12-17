@@ -13,7 +13,7 @@ pygame.init()
 
 audio = Audio(volume=1.0)
 
-WIDTH, HEIGHT = 1500, 1000
+WIDTH, HEIGHT = 1200, 1000
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Drunken Sailor")
 

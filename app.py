@@ -4,6 +4,7 @@ from pygame.locals import *
 from sprite import Sprite
 from audio import Audio
 from scores import ScoreManager
+from upgrades import UpgradeSystem
 
 
 pygame.init()
@@ -166,6 +167,8 @@ audio = Audio(volume=1.0)
 
 score_manager = ScoreManager()
 
+upgrade_system = UpgradeSystem()
+
 
 shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
@@ -208,6 +211,8 @@ def main():
                 if event.key == K_SPACE:
                     global fire_canon
                     fire_canon = True
+                if event.key == K_u or event.key == K_v:
+                    upgrade_system.upgrade()
 
         draw_window(xpos)
 
@@ -243,9 +248,9 @@ def draw_window(xpos):
 
 def spawn_boat():
     boat_pos = WINDOW.blit(boat_sprite.get_sprite(), (300, 130))
-    WINDOW.blit(canon_sprite.get_sprite(), (300, 225))
-    WINDOW.blit(canon_sprite.get_sprite(), (600, 225))
-    WINDOW.blit(canon_sprite.get_sprite(), (900, 225))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (300, 225))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (600, 225))
+    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (900, 225))
 
     boat_pos.y -= 100
     return boat_pos
@@ -256,7 +261,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global last_time_cannonball_timer 
 
     
-    if current_time - last_time_cannonball_timer >= 900 and fire_canon == True:
+    if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
         fire_canon = False
         cannon_ball = ObjectInstanceData(3, xpos + 25 , 255)
         active_cannonballs_list.append(cannon_ball)
@@ -274,6 +279,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
                 active_sharks_list.pop(index)
 
                 score_manager.add_score(100)
+                upgrade_system.add_gold(50)
             index += 1
 
 
