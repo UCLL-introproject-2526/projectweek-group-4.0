@@ -142,21 +142,27 @@ def draw_window(xpos):
 
 
     shark_spawner(boat_pos, current_time, xpos)
-    # ===== SCORE DISPLAY =====
+    # ===== UI =====
+    game_ui()
+    # =========================
+    pygame.display.update()
+    fpsClock.tick(FPS)
+
+def game_ui():
     score_text = score_font.render(
-        f"Score: {score_manager.current_score}", True, (0, 0, 0)
+    f"Score: {score_manager.current_score}", True, (0, 0, 0)
     )
     high_score_text = score_font.render(
         f"High Score: {score_manager.high_score}", True, (0, 0, 0)
     )
 
+    coin_text = score_font.render(
+        f"Coins: {upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
+    )
+
     WINDOW.blit(score_text, (20, 20))
     WINDOW.blit(high_score_text, (20, 60))
-    # =========================
-    pygame.display.update()
-    fpsClock.tick(FPS)
-
-
+    WINDOW.blit(coin_text, (1000,100))
 
 def spawn_boat():
     screen_width, screen_height = WINDOW.get_size()
