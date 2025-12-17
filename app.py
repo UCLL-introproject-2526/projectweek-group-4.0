@@ -226,15 +226,17 @@ def shark_spawner(boat_pos, current_time, xpos):
     
 
     if current_time - last_time_shark_timer >= shark_spawn_delay:
-        if shark_spawn_delay < 200:
+        if shark_spawn_delay < 180:
             shark_spawn_delay = shark_spawn_delay
         elif shark_spawn_delay < 1000:
             shark_spawn_delay -= 10
+            #shark_speed + 0.5
         elif shark_spawn_delay < 1600:
+            shark_speed += 0.02
             shark_spawn_delay -= 25
         else:
             shark_spawn_delay -= 90
-            shark_speed += 0.1 
+            shark_speed += 0.05
 
 
        # random_chance = random.randint(0, 1000)
