@@ -3,6 +3,8 @@ import pygame, sys, random
 from pygame.locals import *
 from sprite import Sprite
 from audio import Audio
+from scores import ScoreManager
+
 
 pygame.init()
  
@@ -16,6 +18,7 @@ WINDOW_HEIGHT = 1000
 
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('My Game!')
+score_font = pygame.font.Font(None, 36)
 
 
 class Animations:
@@ -161,6 +164,9 @@ anim = Animations()
 
 audio = Audio(volume=1.0)
 
+score_manager = ScoreManager()
+
+
 shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
 
@@ -178,6 +184,7 @@ current_lives = 3
 fire_canon = False
 # The main function that controls the game
 def main():
+    score_manager.reset_score()
     looping = True
     startpos = 600
     xpos = startpos
@@ -218,8 +225,20 @@ def draw_window(xpos):
 
 
     shark_spawner(boat_pos, current_time, xpos)
+    # ===== SCORE DISPLAY =====
+    score_text = score_font.render(
+        f"Score: {score_manager.current_score}", True, (0, 0, 0)
+    )
+    high_score_text = score_font.render(
+        f"High Score: {score_manager.high_score}", True, (0, 0, 0)
+    )
+
+    WINDOW.blit(score_text, (20, 20))
+    WINDOW.blit(high_score_text, (20, 60))
+    # =========================
     pygame.display.update()
     fpsClock.tick(FPS)
+
 
 
 def spawn_boat():
@@ -253,6 +272,8 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
                 active_cannonballs_list.remove(cannonball)
                 sharkpos_list.pop(index)
                 active_sharks_list.pop(index)
+
+                score_manager.add_score(100)
             index += 1
 
 
@@ -286,6 +307,7 @@ def shark_spawner(boat_pos, current_time, xpos):
             current_lives -= 1
             active_sharks_list.remove(shark)
             if current_lives <= 0:
+                score_manager.save_score()
                 pygame.quit()
                 sys.exit() 
 
