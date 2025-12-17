@@ -4,12 +4,8 @@ import sys
 from app import main
 from sprite import Sprite
 from audio import Audio
-import options
-
-
 
 pygame.init()
-
 
 audio = Audio(volume=1.0)
 
@@ -179,9 +175,10 @@ def main_menu():
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if buttons["start"]["rect"].collidepoint(event.pos):
+                    audio.StopMusic()
                     return
                 elif buttons["options"]["rect"].collidepoint(event.pos):
-                    options.options_menu(audio)
+                    print("Options clicked")
                 elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
