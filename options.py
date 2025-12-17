@@ -24,19 +24,20 @@ def options_menu(audio):
     dragging = False
     fullscreen = False
 
-    # Slider
-    slider_x = 350
-    slider_y = 380
+    # Slider dimensions
     slider_width = 500
     slider_height = 10
     knob_w, knob_h = 20, 30
+    slider_offset_y = 380  # vertical offset from top
 
-    # Buttons
-    mute_btn = pygame.Rect(450, 470, 300, 60)
-    screen_btn = pygame.Rect(450, 560, 300, 60)
+    # Button dimensions
+    button_width, button_height = 300, 60
+    mute_offset_y = 470
+    screen_offset_y = 560
 
     while True:
         screen.fill((220, 220, 220))
+        WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 
         # ----- TEXT -----
         title = FONT.render("OPTIONS", True, BLACK)
@@ -49,9 +50,11 @@ def options_menu(audio):
         screen.blit(hint, hint.get_rect(center=(WIDTH // 2, 290)))
 
         back_text = SMALL_FONT.render("ESC to return", True, BLACK)
-        screen.blit(back_text, back_text.get_rect(center=(WIDTH // 2, 850)))
+        screen.blit(back_text, back_text.get_rect(center=(WIDTH // 2, HEIGHT - 150)))
 
         # ----- SLIDER -----
+        slider_x = (WIDTH - slider_width) // 2
+        slider_y = slider_offset_y
         slider_bg = pygame.Rect(slider_x, slider_y, slider_width, slider_height)
         knob_x = slider_x + int(volume * slider_width) - knob_w // 2
         slider_knob = pygame.Rect(knob_x, slider_y - 10, knob_w, knob_h)
@@ -60,6 +63,9 @@ def options_menu(audio):
         pygame.draw.rect(screen, BLUE, slider_knob)
 
         # ----- BUTTONS -----
+        mute_btn = pygame.Rect((WIDTH - button_width)//2, mute_offset_y, button_width, button_height)
+        screen_btn = pygame.Rect((WIDTH - button_width)//2, screen_offset_y, button_width, button_height)
+
         mute_text = "UNMUTE" if audio.muted else "MUTE"
         screen_text = "WINDOWED" if fullscreen else "FULLSCREEN"
 
@@ -68,7 +74,6 @@ def options_menu(audio):
 
         screen.blit(FONT.render(mute_text, True, WHITE),
                     FONT.render(mute_text, True, WHITE).get_rect(center=mute_btn.center))
-
         screen.blit(FONT.render(screen_text, True, WHITE),
                     FONT.render(screen_text, True, WHITE).get_rect(center=screen_btn.center))
 
@@ -81,11 +86,9 @@ def options_menu(audio):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return
-
                 if event.key == pygame.K_RIGHT:
                     volume = min(1.0, volume + 0.05)
                     audio.set_master_volume(volume)
-
                 if event.key == pygame.K_LEFT:
                     volume = max(0.0, volume - 0.05)
                     audio.set_master_volume(volume)
@@ -93,10 +96,8 @@ def options_menu(audio):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if slider_knob.collidepoint(event.pos):
                     dragging = True
-
                 if mute_btn.collidepoint(event.pos):
                     audio.toggle_mute()
-
                 if screen_btn.collidepoint(event.pos):
                     fullscreen = not fullscreen
                     if fullscreen:
@@ -114,5 +115,4 @@ def options_menu(audio):
 
         pygame.display.flip()
         clock.tick(60)
-
 

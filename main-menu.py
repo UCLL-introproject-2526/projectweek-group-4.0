@@ -4,7 +4,7 @@ import sys
 from app import main
 from sprite import Sprite
 from audio import Audio
-from options import options_menu
+import options
 
 
 pygame.init()
@@ -156,20 +156,35 @@ bg_offset_x = 0
 bg_offset_y = 0
 
 def main_menu():
-    global bg_offset_x, bg_offset_y
+    global bg_offset_x, bg_offset_y, screen
     audio.PlayMusic()
+
     while True:
         dt = clock.tick(60) / 100  # delta time in seconds
-        
-      # vertical drift
-        bg_offset_x += 2 * dt 
+        WIDTH, HEIGHT = screen.get_width(), screen.get_height()
+
+        # ----- BACKGROUND -----
+        bg_offset_x += 2 * dt
         BACKGROUND_IMAGE.render(screen, bg_offset_x, bg_offset_y)
+
+        # ----- LOGO -----
+        logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
         screen.blit(logo_image, logo_rect)
 
+        # ----- BUTTONS POSITIONS -----
+        BUTTON_Y_START = HEIGHT // 2 + 150
+        BUTTON_SPACING = 125
+
+        buttons["start"]["rect"].center = (WIDTH // 2, BUTTON_Y_START)
+        buttons["options"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
+        buttons["quit"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING * 2)
+
+        # ----- DRAW BUTTONS -----
         draw_hover_button(screen, buttons["start"], dt)
         draw_hover_button(screen, buttons["options"], dt)
         draw_hover_button(screen, buttons["quit"], dt)
 
+        # ----- EVENTS -----
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -179,13 +194,14 @@ def main_menu():
                 if buttons["start"]["rect"].collidepoint(event.pos):
                     return
                 elif buttons["options"]["rect"].collidepoint(event.pos):
-                    options_menu(audio)
+                    options.options_menu(audio)
                 elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
 
         pygame.display.flip()
         clock.tick(60)
+
 
 main_menu()
 main()
