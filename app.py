@@ -123,6 +123,7 @@ def main():
                 if event.key == K_SPACE:
                     global fire_canon
                     fire_canon = True
+                    anim.__firetimer = 0
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim)
 
