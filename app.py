@@ -105,7 +105,7 @@ class Animations:
 
 
 
-class Shark:
+class ObjectInstanceData:
     def __init__(self, ypos_increment, xpos, ypos):
         self.ypos_increment = ypos_increment
         self.__xpos = xpos
@@ -174,6 +174,8 @@ shark_spawn_delay = 3000
 
 current_lives = 3
 
+
+fire_canon = False
 # The main function that controls the game
 def main():
     looping = True
@@ -196,6 +198,9 @@ def main():
                     if xpos < startpos + movementAmount:
                         xpos += movementAmount 
                         anim.start_drink_anim()
+                if event.key == K_SPACE:
+                    global fire_canon
+                    fire_canon = True
 
         draw_window(xpos)
 
@@ -228,11 +233,14 @@ def spawn_boat():
 
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
+    global fire_canon
     global last_time_cannonball_timer 
+
     
-    if current_time - last_time_cannonball_timer >= 900:
-        shark = Shark(3, xpos , 200)
-        active_cannonballs_list.append(shark)
+    if current_time - last_time_cannonball_timer >= 900 and fire_canon == True:
+        fire_canon = False
+        cannon_ball = ObjectInstanceData(3, xpos + 25 , 255)
+        active_cannonballs_list.append(cannon_ball)
         audio.Fire()
         last_time_cannonball_timer = current_time
 
@@ -263,7 +271,7 @@ def shark_spawner(boat_pos, current_time, xpos):
         else:
             shark_spawn_delay -= 100
 
-        shark = Shark(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+        shark = ObjectInstanceData(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
         last_time_shark_timer = current_time
 
