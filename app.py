@@ -87,6 +87,8 @@ shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
 
+active_orca_list = []
+
 active_cannonballs_list = []
 
 last_time_shark_timer = 0
@@ -224,6 +226,10 @@ def shark_spawner(boat_pos, current_time, xpos):
         else:
             shark_spawn_delay -= 90
 
+        random_chance = random.Random.randint(0, 1000)
+
+        #if(random_chance)
+        
         shark = ObjectInstanceData(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
         last_time_shark_timer = current_time
