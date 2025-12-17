@@ -91,6 +91,8 @@ active_orca_list = []
 
 active_cannonballs_list = []
 
+shark_speed = 1
+
 last_time_shark_timer = 0
 last_time_cannonball_timer = 0
 shark_spawn_delay = 2100
@@ -213,11 +215,11 @@ def smoke_animation(x, y):
 def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
     global shark_spawn_delay
-
+    global shark_speed
     
 
     if current_time - last_time_shark_timer >= shark_spawn_delay:
-        if shark_spawn_delay < 250:
+        if shark_spawn_delay < 200:
             shark_spawn_delay = shark_spawn_delay
         elif shark_spawn_delay < 1000:
             shark_spawn_delay -= 10
@@ -225,12 +227,14 @@ def shark_spawner(boat_pos, current_time, xpos):
             shark_spawn_delay -= 25
         else:
             shark_spawn_delay -= 90
+            shark_speed + 0.1
 
-        random_chance = random.Random.randint(0, 1000)
+
+       # random_chance = random.randint(0, 1000)
 
         #if(random_chance)
-        
-        shark = ObjectInstanceData(-1, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+
+        shark = ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
         active_sharks_list.append(shark)
         last_time_shark_timer = current_time
 
