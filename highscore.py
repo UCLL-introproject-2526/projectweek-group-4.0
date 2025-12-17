@@ -1,34 +1,52 @@
-
 # highscore.py
+import os
 
-# Points per shark kill
+SCORE_FILE = "scores.txt"
 POINTS_PER_KILL = 50
 
-# In-memory score state
-current_score: int = 0       # score for the current run
-high_score: int = 0          # highest single-run score seen this session
-total_points: int = 0        # cumulative total across runs (this session)
+current_score = 0
+high_score = 0
+total_points = 0
 
 
-def reset_current() -> None:
-    """Reset only the current run score."""
+# -------------------------
+# INTERNAL FILE FUNCTIONS
+# -------------------------
+def _load_scores():
+    """Load all past scores from file."""
+    if not os.path.exists(SCORE_FILE):
+        return []
+
+    with open(SCORE_FILE, "r") as f:
+        try:
+            return [int(line.strip()) for line in f]
+        except ValueError:
+            return []
+
+
+def _save_score(score: int):
+    """Append score to the file."""
+    with open(SCORE_FILE, "a") as f:
+        f.write(f"{score}\n")
+
+
+def _update_high_from_file():
+    """Refresh high_score from file."""
+    global high_score
+    scores = _load_scores()
+    high_score = max(scores) if scores else 0
+    return high_score
+
+
+# -------------------------
+# SCORE MANAGEMENT
+# -------------------------
+def reset_current():
     global current_score
     current_score = 0
 
 
-def reset_all() -> None:
-    """Reset everything (current, high, total)."""
-    global current_score, high_score, total_points
-    current_score = 0
-    high_score = 0
-    total_points = 0
-
-
 def add_kill(points: int = POINTS_PER_KILL) -> int:
-    """
-    Add points for a kill.
-    Defaults to 50 per kill. Returns the new current score.
-    """
     global current_score, total_points
     current_score += points
     total_points += points
@@ -36,10 +54,6 @@ def add_kill(points: int = POINTS_PER_KILL) -> int:
 
 
 def add_points(points: int) -> int:
-    """
-    Generic adder in case you grant points from other actions later.
-    Returns the new current score.
-    """
     global current_score, total_points
     current_score += points
     total_points += points
@@ -48,8 +62,8 @@ def add_points(points: int) -> int:
 
 def update_high_score() -> int:
     """
-    If current run beats the high score, update it.
-    Returns the latest high score.
+    Updates high_score if current_score is larger.
+    Also saves the new high score to file.
     """
     global high_score, current_score
     if current_score > high_score:
@@ -57,15 +71,24 @@ def update_high_score() -> int:
     return high_score
 
 
+def end_round():
+    """Call this on GAME OVER. Saves score and updates high score."""
+    global current_score
+    _save_score(current_score)
+    _update_high_from_file()
+
+
+# -------------------------
+# GETTERS
+# -------------------------
 def get_current() -> int:
-    """Return the current run score."""
     return current_score
 
 
 def get_high() -> int:
-    """Return the high score."""
+    _update_high_from_file()
     return high_score
 
 
 def get_total() -> int:
-    """Return total points accumulated this session."""
+    return total_points
