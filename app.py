@@ -14,10 +14,15 @@ BACKGROUND = (255, 255, 255)
 
 FPS = 60
 fpsClock = pygame.time.Clock()
-WINDOW_WIDTH = 1200
-WINDOW_HEIGHT = 1000
+#WINDOW_WIDTH = 1200
+#WINDOW_HEIGHT = 1000
 
-WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+#WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+GAME_WIDTH = 1200
+GAME_HEIGHT = 1000
+
+WINDOW = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
+GAME_SURFACE = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 pygame.display.set_caption('My Game!')
 score_font = pygame.font.Font(None, 36)
 
@@ -121,6 +126,22 @@ current_lives = 3
 
 
 fire_canon = False
+
+def scale_surface_to_screen(surface, screen):
+    sw, sh = surface.get_size()
+    ww, wh = screen.get_size()
+
+    scale = min(ww / sw, wh / sh)
+
+    new_w = int(sw * scale)
+    new_h = int(sh * scale)
+
+    scaled_surface = pygame.transform.smoothscale(surface, (new_w, new_h))
+
+    offset_x = (ww - new_w) // 2
+    offset_y = (wh - new_h) // 2
+
+    return scaled_surface, offset_x, offset_y
 # The main function that controls the game
 def main():
     score_manager.reset_score()
@@ -155,15 +176,15 @@ def main():
 
 def draw_window(xpos):
     global last_time_shark_timer 
-    WINDOW.fill(BACKGROUND)
+    GAME_SURFACE.fill(BACKGROUND)
 
     # === ADD: Render background ===
-    BACKGROUND_IMAGE.render(WINDOW)
+    BACKGROUND_IMAGE.render(GAME_SURFACE)
     boat_pos = spawn_boat()
     anim.handle_animations()
     
     player_sprite = anim.get_player_img()
-    WINDOW.blit(player_sprite, (xpos, 200))
+    GAME_SURFACE.blit(player_sprite, (xpos, 200))
     current_time = pygame.time.get_ticks()
 
 
@@ -171,6 +192,16 @@ def draw_window(xpos):
     # ===== UI =====
     game_ui()
     # =========================
+     # ---- CENTER GAME SURFACE ----
+    window_w, window_h = WINDOW.get_size()
+    offset_x = (window_w - GAME_WIDTH) // 2
+    offset_y = (window_h - GAME_HEIGHT) // 2
+
+    WINDOW.fill((0, 0, 0))
+
+    scaled_game, ox, oy = scale_surface_to_screen(GAME_SURFACE, WINDOW)
+    WINDOW.blit(scaled_game, (ox, oy))
+
     pygame.display.update()
     fpsClock.tick(FPS)
 
@@ -186,16 +217,20 @@ def game_ui():
         f"Coins: {upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
     )
 
-    WINDOW.blit(score_text, (20, 20))
-    WINDOW.blit(high_score_text, (20, 60))
-    WINDOW.blit(coin_text, (1000,100))
+    GAME_SURFACE.blit(score_text, (20, 20))
+    GAME_SURFACE.blit(high_score_text, (20, 60))
+    GAME_SURFACE.blit(coin_text, (1000,100))
 
 def spawn_boat():
-    screen_width, screen_height = WINDOW.get_size()
-    boat_pos = WINDOW.blit(boat_sprite.get_sprite(), (screen_width * 0.25, 130))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x, 225))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x + 300, 225))
-    WINDOW.blit(upgrade_system.get_current_cannon_spirte().get_sprite(), (boat_pos.x + 600, 225))
+    screen_width = GAME_WIDTH
+    boat_pos = GAME_SURFACE.blit(
+        boat_sprite.get_sprite(),
+        (screen_width * 0.25, 130)
+    )
+    cannon_sprite = upgrade_system.get_current_cannon_spirte().get_sprite()
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x, 225))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 300, 225))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 600, 225))
 
     boat_pos.y -= 100
     return boat_pos
@@ -218,7 +253,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
         anim.cannon_fire_anim()
 
     for cannonball in active_cannonballs_list:
-        cannonball_pos = WINDOW.blit(canonball_sprite.get_sprite(), (cannonball.get_next_frame()[0], cannonball.get_next_frame()[1]))
+        cannonball_pos = GAME_SURFACE.blit(canonball_sprite.get_sprite(), (cannonball.get_next_frame()[0], cannonball.get_next_frame()[1]))
 
         index = 0
         for sharkpos in sharkpos_list:
@@ -233,12 +268,12 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
             index += 1
 
 def smoke_animation(x, y):
-    WINDOW.blit(anim.get_smoke_img(), (x, y))
+    GAME_SURFACE.blit(anim.get_smoke_img(), (x, y))
 
 def particle_animation():
-    WINDOW.blit(anim.get_upgrade_particle_img(), (250, 180))
-    WINDOW.blit(anim.get_upgrade_particle_img(), (550, 180))
-    WINDOW.blit(anim.get_upgrade_particle_img(), (850, 180))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (250, 180))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (550, 180))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (850, 180))
 
 def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
@@ -276,7 +311,7 @@ def shark_spawner(boat_pos, current_time, xpos):
     global current_lives
 
     for shark in active_sharks_list:
-        shark_pos = WINDOW.blit(shark.get_anim(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+        shark_pos = GAME_SURFACE.blit(shark.get_anim(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
         
         if boat_pos.colliderect(shark_pos):
             current_lives -= 1
@@ -293,7 +328,7 @@ def shark_spawner(boat_pos, current_time, xpos):
 
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
-    WINDOW.blit(currentSprite.get_sprite(), (xpos, 200))
+    GAME_SURFACE.blit(currentSprite.get_sprite(), (xpos, 200))
 
 
 if __name__ == "__main__":
