@@ -40,7 +40,7 @@ class Animations:
         self.__upgrade_particle_3 = Sprite("Assets/Sprites/upgrade_particle_3.png", 200, 200)
         self.__upgrade_particle_4 = Sprite("Assets/Sprites/upgrade_particle_4.png", 200, 200)
 
-        self.__upgrade_message_sprite = Sprite("Assets/Sprites/upgrade_popup.png",100,100)
+        self.__upgrade_message_sprite = Sprite("Assets/Sprites/upgrade_popup.png",250,250)
 
         self.shark1 = Sprite("Assets/Sprites/shark_swim_1.png", 100, 162)
         self.shark1.rotate_sprite()
@@ -100,6 +100,9 @@ class Animations:
         self.__show_upgrade_message = False
         self.__popup_timer = 0
 
+        self.__bg_offset_x = 0
+
+
     def start_drink_anim(self):
         audio = Audio()
         audio.Drink()
@@ -112,7 +115,7 @@ class Animations:
     def upgrade_particle_anim(self):
         self.__particletimer = 0.4
 
-    def handle_animations(self, current_gold_amount):
+    def handle_animations(self):
         #IDLE ANIMATION
         if self.__idletimer <= 0 and self.__player_idle:
             self.__idletimer = 0.5 #seconds
@@ -202,6 +205,9 @@ class Animations:
         self.__particletimer = max(0, self.__particletimer)
         self.__popup_timer = max(0, self.__popup_timer)
 
+        self.__bg_offset_x += 10 * self.__dt
+
+
     def get_player_img(self):
         return self.__player_image.get_sprite()
 
@@ -227,8 +233,11 @@ class Animations:
         if self.__show_upgrade_message:
             return self.__upgrade_message_sprite.get_sprite()
         else:
-            return pygame.Surface((0,0))
+           return pygame.Surface((0,0))
+        
+    def get_background_offset(self):
+        return self.__bg_offset_x
 
     def upgrade_message(self):
         self.__show_upgrade_message = True
-        self.__popup_timer = 4.0
+        self.__popup_timer = 0.8

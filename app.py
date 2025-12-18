@@ -61,7 +61,6 @@ class Enemy:
 
 # === ADD: Background class ===
 class Background:
-    """Loads and tiles a seamless background image."""
     def __init__(self, path: str, tile_size: tuple[int, int]):
         self._path = path
         self._tile_size = tile_size
@@ -72,19 +71,21 @@ class Background:
             img = pygame.image.load(self._path).convert_alpha()
             img = pygame.transform.smoothscale(img, self._tile_size)
             return img
-        except Exception as e:
-            print(f"[WARN] Could not load background ({self._path}): {e}")
+        except Exception:
             surf = pygame.Surface(self._tile_size)
             surf.fill(BACKGROUND)
             return surf
 
-    def render(self, surface: pygame.Surface):
+    def render(self, surface: pygame.Surface, offset_x=0, offset_y=0):
         tile_w, tile_h = self._tile.get_size()
         screen_w, screen_h = surface.get_size()
 
-        for x in range(0, screen_w, tile_w):
-            for y in range(0, screen_h, tile_h):
-                surface.blit(self._tile, (x, y))
+        offset_x = int(offset_x) % tile_w
+        offset_y = int(offset_y) % tile_h
+
+        for x in range(-tile_w, screen_w + tile_w, tile_w):
+            for y in range(-tile_h, screen_h + tile_h, tile_h):
+                surface.blit(self._tile, (x + offset_x, y + offset_y))
 
 # === ADD: Create background instance ===
 BACKGROUND_IMAGE = Background(
@@ -200,10 +201,10 @@ def draw_window(xpos):
     GAME_SURFACE.fill(BACKGROUND)
 
     # === ADD: Render background ===
-    BACKGROUND_IMAGE.render(GAME_SURFACE)
+    BACKGROUND_IMAGE.render(GAME_SURFACE, anim.get_background_offset() , 0)
+    #BACKGROUND_IMAGE.render(GAME_SURFACE)
     boat_pos = spawn_boat()
-    anim.handle_animations(upgrade_system.get_current_gold_amount())
-    GAME_SURFACE.blit(anim.get_upgrade_popup(), (boat_pos.x, 155))
+    anim.handle_animations()
     player_sprite = anim.get_player_img()
     GAME_SURFACE.blit(player_sprite, (xpos, 135))
     GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 105))
@@ -213,6 +214,7 @@ def draw_window(xpos):
     shark_spawner(boat_pos, current_time, xpos)
     # ===== UI =====
     game_ui()
+    upgrade_pop_up()
     # =========================
      # ---- CENTER GAME SURFACE ----
     window_w, window_h = WINDOW.get_size()
@@ -259,6 +261,10 @@ def spawn_boat():
     boat_pos.y -= 100
     return boat_pos
 
+def upgrade_pop_up():
+    if upgrade_system.check_upgrade_price():
+        anim.upgrade_message()
+    GAME_SURFACE.blit(anim.get_upgrade_popup(), (50, 180))
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global fire_canon

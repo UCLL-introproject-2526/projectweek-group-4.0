@@ -48,6 +48,17 @@ class UpgradeSystem:
     def get_current_gold_amount(self):
         return self.__gold_amount
 
+    def check_upgrade_price(self):
+        if self.__current_upgrade_index >= len(self.__upgrades):
+            return False
+
+        current_upgrade = self.__upgrades[self.__current_upgrade_index]
+
+        if self.__gold_amount >= current_upgrade.get_upgrade_gold_cost():
+            return True
+        
+        return False
+
     def add_gold(self, gold_amount):
         self.__gold_amount += gold_amount
 
