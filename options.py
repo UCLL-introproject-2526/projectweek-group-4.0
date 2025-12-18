@@ -132,9 +132,10 @@ def options_menu(audio):
                 if screen_btn.collidepoint(event.pos):
                     fullscreen = not fullscreen
                     if fullscreen:
-                        info = pygame.display.Info()
+                        modes = pygame.display.list_modes()
+
                         screen = pygame.display.set_mode(
-                        (info.current_w, info.current_h),
+                        (modes[0][0], modes[0][1]),
                         pygame.FULLSCREEN
                         )
                     else:

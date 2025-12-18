@@ -19,7 +19,7 @@ fpsClock = pygame.time.Clock()
 
 #WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 GAME_WIDTH = 1200
-GAME_HEIGHT = 1000
+GAME_HEIGHT = 800
 
 WINDOW = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 GAME_SURFACE = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -184,7 +184,7 @@ def draw_window(xpos):
     anim.handle_animations()
     
     player_sprite = anim.get_player_img()
-    GAME_SURFACE.blit(player_sprite, (xpos, 200))
+    GAME_SURFACE.blit(player_sprite, (xpos, 135))
     current_time = pygame.time.get_ticks()
 
 
@@ -225,12 +225,12 @@ def spawn_boat():
     screen_width = GAME_WIDTH
     boat_pos = GAME_SURFACE.blit(
         boat_sprite.get_sprite(),
-        (screen_width * 0.25, 130)
+        (screen_width * 0.25, 65)
     )
     cannon_sprite = upgrade_system.get_current_cannon_spirte().get_sprite()
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x, 225))
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 300, 225))
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 600, 225))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x, 160))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 300, 160))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 600, 160))
 
     boat_pos.y -= 100
     return boat_pos
