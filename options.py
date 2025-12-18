@@ -12,6 +12,10 @@ clock = pygame.time.Clock()
 FONT = pygame.font.Font(None, 48)
 SMALL_FONT = pygame.font.Font(None, 32)
 
+OPTIONS_FONT = pygame.font.Font("Assets/fonts/Pixel Game.otf", 128)
+OPTIONS_MEDIUM_FONT = pygame.font.Font("Assets/fonts/Pixel Game.otf", 90)
+OPTIONS_SMALL_FONT = pygame.font.Font("Assets/fonts/Pixel Game.otf", 64)
+
 mute_sprite = Sprite(
     "Assets/Sprites/mute2.png",
     450,   # width
@@ -153,16 +157,16 @@ def options_menu(audio):
         buttons["window"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
 
         # ----- TEXT -----
-        title = FONT.render("OPTIONS", True, BLACK)
+        title = OPTIONS_FONT.render("OPTIONS", True, BLACK)
         screen.blit(title, title.get_rect(center=(WIDTH // 2, 100)))
 
-        vol_label = FONT.render(f"Volume: {int(volume * 100)}%", True, BLACK)
+        vol_label = OPTIONS_MEDIUM_FONT.render(f"Volume: {int(volume * 100)}%", True, BLACK)
         screen.blit(vol_label, vol_label.get_rect(center=(WIDTH // 2, 250)))
 
-        hint = SMALL_FONT.render("LEFT / RIGHT or Drag Slider", True, BLACK)
+        hint = OPTIONS_SMALL_FONT.render("LEFT / RIGHT or Drag Slider", True, BLACK)
         screen.blit(hint, hint.get_rect(center=(WIDTH // 2, 290)))
 
-        back_text = SMALL_FONT.render("ESC to return", True, BLACK)
+        back_text = OPTIONS_SMALL_FONT.render("ESC to return", True, BLACK)
         screen.blit(back_text, back_text.get_rect(center=(WIDTH // 2, HEIGHT - 150)))
 
         # ----- SLIDER -----
