@@ -202,8 +202,7 @@ def draw_window(xpos):
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(GAME_SURFACE)
     boat_pos = spawn_boat()
-    anim.handle_animations(upgrade_system.get_current_gold_amount())
-    GAME_SURFACE.blit(anim.get_upgrade_popup(), (boat_pos.x, 155))
+    anim.handle_animations()
     player_sprite = anim.get_player_img()
     GAME_SURFACE.blit(player_sprite, (xpos, 135))
     GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 105))
@@ -213,6 +212,7 @@ def draw_window(xpos):
     shark_spawner(boat_pos, current_time, xpos)
     # ===== UI =====
     game_ui()
+    upgrade_pop_up()
     # =========================
      # ---- CENTER GAME SURFACE ----
     window_w, window_h = WINDOW.get_size()
@@ -259,6 +259,10 @@ def spawn_boat():
     boat_pos.y -= 100
     return boat_pos
 
+def upgrade_pop_up():
+    if upgrade_system.check_upgrade_price():
+        anim.upgrade_message()
+    GAME_SURFACE.blit(anim.get_upgrade_popup(), (50, 180))
 
 def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global fire_canon
