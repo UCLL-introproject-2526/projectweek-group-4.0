@@ -10,6 +10,7 @@ class Audio:
         self._seagull_sound = pygame.mixer.Sound("Assets/Audio/Seagulls.wav")
         self._upgrade_sound = pygame.mixer.Sound("Assets/Audio/Upgrade_Sound_Effect.wav")
         self._boat_takes_damage_sound = pygame.mixer.Sound("Assets/Audio/Boat_Takes_Damage.wav")
+        self._enemy_hit_sound = pygame.mixer.Sound("Assets/Audio/Enemy Hit Sound Effect.wav")
 
         self._main_music.set_volume(volume)
         self._ambient_music.set_volume(volume)
@@ -19,6 +20,7 @@ class Audio:
         self._seagull_sound.set_volume(volume*8)
         self._upgrade_sound.set_volume(volume)
         self._boat_takes_damage_sound.set_volume(volume*3)
+        self._enemy_hit_sound.set_volume(volume)
         self.muted = False
         self.volume = volume
 
@@ -33,6 +35,9 @@ class Audio:
     
     def Fire(self):
         self._cannon_fire_sound.play()
+
+    def EnemyHit(self):
+        self._enemy_hit_sound.play()
 
     def BoatTakesDamage(self):
         self._boat_takes_damage_sound.play()
