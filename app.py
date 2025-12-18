@@ -184,7 +184,8 @@ def draw_window(xpos):
     anim.handle_animations()
     
     player_sprite = anim.get_player_img()
-    GAME_SURFACE.blit(player_sprite, (xpos, 135))
+    GAME_SURFACE.blit(player_sprite, (xpos, 200))
+    GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 100))
     current_time = pygame.time.get_ticks()
 
 
