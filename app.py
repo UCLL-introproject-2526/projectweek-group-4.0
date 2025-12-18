@@ -241,7 +241,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global fire_canon
     global last_time_cannonball_timer 
 
-    smoke_animation(xpos , 220)
+    smoke_animation(xpos , 155)
     particle_animation()
 
     if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
@@ -272,9 +272,9 @@ def smoke_animation(x, y):
     GAME_SURFACE.blit(anim.get_smoke_img(), (x, y))
 
 def particle_animation():
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (250, 180))
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (550, 180))
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (850, 180))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (250, 115))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (550, 115))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (850, 115))
 
 def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
