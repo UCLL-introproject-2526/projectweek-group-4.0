@@ -113,8 +113,6 @@ shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
 
-active_orca_list = []
-
 active_cannonballs_list = []
 
 shark_speed = 1
@@ -152,6 +150,11 @@ def init_game():
     shark_spawn_delay = 2100
     current_lives = 3
     shark_speed = 1
+    active_sharks_list.clear()
+
+    active_cannonballs_list.clear()
+
+    score_manager.reset_score()
 
     upgrade_system.reset_game()
     
