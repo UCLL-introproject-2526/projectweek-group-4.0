@@ -26,10 +26,12 @@ class UpgradeSystem:
         self.__cannon2 = Sprite("Assets/Sprites/Cannon2.png",100,100)
         self.__cannon3 = Sprite("Assets/Sprites/Cannon3.png",100,100)
         self.__cannon4 = Sprite("Assets/Sprites/Cannon4.png",100,100)
+        self.__cannon5 = Sprite("Assets/Sprites/Cannon5.png",100,100)
+
 
 
         self.__upgrades = [Upgrade(500, self.__cannon2, 750), Upgrade(1000, self.__cannon3, 500), 
-                    Upgrade(1500, self.__cannon4, 300), Upgrade(2000, self.__cannon4, 150)]
+                    Upgrade(1500, self.__cannon4, 300), Upgrade(2000, self.__cannon5, 150)]
         
         self.__current_cannon_sprite = self.__cannon1
 
