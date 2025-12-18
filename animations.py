@@ -17,6 +17,7 @@ class Animations:
         self.__particletimer = 0
         self.__idle_sprite = 0
         self.__shark_sprite = 0
+        self.__orca_sprites = 0
         self.__player_idle = True
 
         self.__idle1 = Sprite("Assets/Sprites/player_idle_1.png", 50, 81)
@@ -48,10 +49,29 @@ class Animations:
         self.shark6 = Sprite("Assets/Sprites/shark_swim_6.png", 100, 162)
         self.shark6.rotate_sprite()
 
+        self.orca1 = Sprite("Assets/Sprites/orca_1.png", 200, 100)
+        self.orca1.rotate_sprite()
+        self.orca2 = Sprite("Assets/Sprites/orca_2.png", 200, 100)
+        self.orca2.rotate_sprite()
+        self.orca3 = Sprite("Assets/Sprites/orca_3.png", 200, 100)
+        self.orca3.rotate_sprite()
+        self.orca4 = Sprite("Assets/Sprites/orca_4.png", 200, 100)
+        self.orca4.rotate_sprite()
+        self.orca5 = Sprite("Assets/Sprites/orca_5.png", 200, 100)
+        self.orca5.rotate_sprite()
+        self.orca6 = Sprite("Assets/Sprites/orca_6.png", 200, 100)
+        self.orca6.rotate_sprite()
+        self.orca7 = Sprite("Assets/Sprites/orca_7.png", 200, 100)
+        self.orca7.rotate_sprite()
+        self.orca8 = Sprite("Assets/Sprites/orca_8.png", 200, 100)
+        self.orca8.rotate_sprite()
+
+        self.__orca_sprites_list = [self.orca1, self.orca2, self.orca3, self.orca4, self.orca5, self.orca6, self.orca7, self.orca8]
         self.__shark_sprites_list = [self.shark1, self.shark2, self.shark3, self.shark4, self.shark5, self.shark6]
 
         self.__player_image = self.__idle1
         self.__shark_image = self.shark1
+        self.__orca_image = self.orca1
         self.__cannon_image = self.__cannon_idle
         self.__upgrade_particle_image = self.__no_smoke
 
@@ -90,6 +110,14 @@ class Animations:
             if self.__shark_sprite >= len(self.__shark_sprites_list):
                 self.__shark_sprite = 0
             self.__shark_image = self.__shark_sprites_list[self.__shark_sprite]
+            self.__shark_sprite += 1
+            self.__sharktimer = 0.1 #seconds
+
+        #ORCA ANIMATION
+        if self.__sharktimer <= 0:
+            if self.__shark_sprite >= len(self.__orca_sprites_list):
+                self.__shark_sprite = 0
+            self.__shark_image = self.__orca_sprites_list[self.__shark_sprite]
             self.__shark_sprite += 1
             self.__sharktimer = 0.1 #seconds
 
@@ -133,6 +161,9 @@ class Animations:
     
     def get_shark_img(self):
         return self.__shark_image.get_sprite()
+    
+    def get_orca_img(self):
+        return self.__orca_image.get_sprite()
     
     def get_smoke_img(self):
         return self.__cannon_image.get_sprite()
