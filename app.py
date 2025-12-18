@@ -6,6 +6,7 @@ from audio import Audio
 from scores import ScoreManager
 from upgrades import UpgradeSystem
 from animations import Animations
+from game_over_screen import show_game_over_screen
 
 pygame.init()
 
@@ -93,10 +94,10 @@ BACKGROUND_IMAGE = Background(
 # sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 # sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
 boat_sprite = Sprite("Assets/Sprites/Boat.png", 720, 290)
-shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
+# shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
 canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
-canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
-shark_sprite.rotate_sprite()
+# canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
+# shark_sprite.rotate_sprite()
 
 anim = Animations()
 
@@ -142,6 +143,18 @@ def scale_surface_to_screen(surface, screen):
     offset_y = (wh - new_h) // 2
 
     return scaled_surface, offset_x, offset_y
+
+def init_game():
+    global shark_spawn_delay
+    global current_lives
+    global shark_speed
+
+    shark_spawn_delay = 2100
+    current_lives = 3
+    shark_speed = 1
+
+    upgrade_system.reset_game()
+    
 # The main function that controls the game
 def main():
     score_manager.reset_score()
@@ -319,8 +332,7 @@ def shark_spawner(boat_pos, current_time, xpos):
             active_sharks_list.remove(shark)
             if current_lives <= 0:
                 score_manager.save_score()
-                pygame.quit()
-                sys.exit() 
+                show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
 
         shark_pos_list.append(shark_pos)
 

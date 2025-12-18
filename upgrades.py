@@ -51,6 +51,11 @@ class UpgradeSystem:
     def add_gold(self, gold_amount):
         self.__gold_amount += gold_amount
 
+    def reset_game(self):
+        self.__gold_amount = 0
+        self.__current_upgrade_index = 0
+        self.__current_cannon_sprite = self.__cannon1
+
     def upgrade(self, anim):
 
         if self.__current_upgrade_index >= len(self.__upgrades):
