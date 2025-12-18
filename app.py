@@ -7,6 +7,7 @@ from scores import ScoreManager
 from upgrades import UpgradeSystem
 from animations import Animations
 from game_over_screen import show_game_over_screen
+from pause_game import show_pause_screen
 
 pygame.init()
 
@@ -187,6 +188,8 @@ def main():
                     anim.__firetimer = 0
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim)
+                if event.key == K_ESCAPE:
+                    show_pause_screen(WINDOW, init_game)
 
         draw_window(xpos)
 
