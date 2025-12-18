@@ -100,6 +100,9 @@ class Animations:
         self.__show_upgrade_message = False
         self.__popup_timer = 0
 
+        self.__bg_offset_x = 0
+
+
     def start_drink_anim(self):
         audio = Audio()
         audio.Drink()
@@ -202,6 +205,9 @@ class Animations:
         self.__particletimer = max(0, self.__particletimer)
         self.__popup_timer = max(0, self.__popup_timer)
 
+        self.__bg_offset_x += 10 * self.__dt
+
+
     def get_player_img(self):
         return self.__player_image.get_sprite()
 
@@ -228,6 +234,9 @@ class Animations:
             return self.__upgrade_message_sprite.get_sprite()
         else:
            return pygame.Surface((0,0))
+        
+    def get_background_offset(self):
+        return self.__bg_offset_x
 
     def upgrade_message(self):
         self.__show_upgrade_message = True
