@@ -95,7 +95,6 @@ BACKGROUND_IMAGE = Background(
 # Sprites
 # sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 # sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
-boat_sprite = Sprite("Assets/Sprites/Boat.png", 720, 290)
 # shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
 canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
 # canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
@@ -248,7 +247,7 @@ def game_ui():
 def spawn_boat():
     screen_width = GAME_WIDTH
     boat_pos = GAME_SURFACE.blit(
-        boat_sprite.get_sprite(),
+        health_ui.get_current_boat_sprite(),
         (screen_width * 0.25, 65)
     )
     cannon_sprite = upgrade_system.get_current_cannon_spirte().get_sprite()
