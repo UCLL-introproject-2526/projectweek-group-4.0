@@ -192,7 +192,7 @@ def main():
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim, audio)
                 if event.key == K_ESCAPE:
-                    show_pause_screen(WINDOW, init_game)
+                    show_pause_screen(WINDOW, init_game, audio)
 
         draw_window(xpos)
 

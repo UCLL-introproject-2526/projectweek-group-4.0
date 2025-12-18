@@ -9,7 +9,7 @@ TEXT_COLOR = (255, 255, 255)
 BUTTON_WIDTH, BUTTON_HEIGHT = 300, 80
 BUTTON_SPACING = 50
 
-def show_pause_screen(screen, restartgame):
+def show_pause_screen(screen, restartgame, audio):
     """
     Toont pauze scherm met:
     - Resume knop (afbeelding)
@@ -79,6 +79,7 @@ def show_pause_screen(screen, restartgame):
                 if resume_rect.collidepoint(event.pos):
                     return "resume"
                 elif restart_rect.collidepoint(event.pos):
+                    audio.StopMusic()
                     restartgame()
                     return "restart"
                 elif quit_rect.collidepoint(event.pos):
