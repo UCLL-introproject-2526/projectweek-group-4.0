@@ -33,12 +33,23 @@ class ObjectInstanceData:
     
 class Enemy:
     def __init__(self, objectinstnace, anim_function, health_amount):
-        self.__object_instance = OPENGLBLIT
+        self.__object_instance = objectinstnace
         self.__anim_function = anim_function
         self.__health_amount = health_amount
 
     def get_anim(self):
         return self.__anim_function()
+    
+    def get_next_frame(self):
+        return self.__object_instance.get_next_frame()
+    
+    def check_alive(self):
+        self.__health_amount -= 1
+        print(self.__health_amount)
+        if self.__health_amount <= 0:
+            return False
+        
+        return True
 
 # === ADD: Background class ===
 class Background:
@@ -199,7 +210,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
 
     if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
         fire_canon = False
-        cannon_ball = ObjectInstanceData(3, xpos + 25 , 255)
+        cannon_ball = ObjectInstanceData(5, xpos + 25 , 255)
         active_cannonballs_list.append(cannon_ball)
         audio.Fire()
         last_time_cannonball_timer = current_time
@@ -213,11 +224,12 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
         for sharkpos in sharkpos_list:
             if sharkpos.colliderect(cannonball_pos):
                 active_cannonballs_list.remove(cannonball)
-                sharkpos_list.pop(index)
-                active_sharks_list.pop(index)
+                if not active_sharks_list[index].check_alive():
+                    sharkpos_list.pop(index)
+                    active_sharks_list.pop(index)
 
-                score_manager.add_score(100)
-                upgrade_system.add_gold(50)
+                    score_manager.add_score(100)
+                    upgrade_system.add_gold(50)
             index += 1
 
 def smoke_animation(x, y):
@@ -248,12 +260,14 @@ def shark_spawner(boat_pos, current_time, xpos):
             shark_speed += 0.05
 
 
-       # random_chance = random.randint(0, 1000)
+        random_chance = random.randint(0, 1000)
 
-        #if(random_chance)
-
-        shark = Enemy(ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], 
-                                         shart_y_spawn_pos), anim.get_shark_img())
+        if(random_chance > 130):
+            shark = Enemy(ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], 
+                                         shart_y_spawn_pos), anim.get_shark_img, 1)
+        else:
+            shark = Enemy(ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], 
+                                         shart_y_spawn_pos), anim.get_orca_img, 2)
         active_sharks_list.append(shark)
         last_time_shark_timer = current_time
 
