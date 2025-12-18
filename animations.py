@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from sprite import Sprite
 from audio import Audio
+from upgrades import UpgradeSystem
 
 
 class Animations:
@@ -96,6 +97,9 @@ class Animations:
         self.__cannon_image = self.__cannon_idle
         self.__upgrade_particle_image = self.__no_smoke
 
+        self.__show_upgrade_message = False
+        self.__popup_timer = 0
+
     def start_drink_anim(self):
         audio = Audio()
         audio.Drink()
@@ -108,7 +112,7 @@ class Animations:
     def upgrade_particle_anim(self):
         self.__particletimer = 0.4
 
-    def handle_animations(self):
+    def handle_animations(self, current_gold_amount):
         #IDLE ANIMATION
         if self.__idletimer <= 0 and self.__player_idle:
             self.__idletimer = 0.5 #seconds
@@ -173,6 +177,13 @@ class Animations:
             self.__parrot_sprite += 1
             self.__parrottimer = 0.2 #seconds
 
+        #UPGRADE POPUP TIMER
+        
+        if self.__popup_timer <= 0:
+            self.__show_upgrade_message = False
+        else:
+            self.__show_upgrade_message = True
+
         self.__dt = self.__clock.tick(60.0) / 1000.0
         self.__drinktimer -= self.__dt
         self.__sharktimer -= self.__dt
@@ -180,6 +191,7 @@ class Animations:
         self.__orcatimer -= self.__dt
         self.__idletimer -= self.__dt
         self.__firetimer -= self.__dt
+        self.__popup_timer -= self.__dt
         self.__particletimer -= self.__dt
         self.__drinktimer = max(0, self.__drinktimer)
         self.__orcatimer = max(0, self.__orcatimer)
@@ -188,6 +200,7 @@ class Animations:
         self.__idletimer = max(0, self.__idletimer)
         self.__firetimer = max(0, self.__firetimer)
         self.__particletimer = max(0, self.__particletimer)
+        self.__popup_timer = max(0, self.__popup_timer)
 
     def get_player_img(self):
         return self.__player_image.get_sprite()
@@ -208,7 +221,14 @@ class Animations:
         return self.__cannon_idle.get_sprite()
 
     def get_upgrade_particle_img(self):
-        return self.__upgrade_particle_image.get_sprite()
+        return self.__upgrade_particle_image.get_sprite()    
     
     def get_upgrade_popup(self):
-        return self.__upgrade_message_sprite.get_sprite()
+        if self.__show_upgrade_message:
+            return self.__upgrade_message_sprite.get_sprite()
+        else:
+            return pygame.Surface((0,0))
+
+    def upgrade_message(self):
+        self.__show_upgrade_message = True
+        self.__popup_timer = 4.0

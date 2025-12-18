@@ -125,7 +125,7 @@ last_time_cannonball_timer = 0
 shark_spawn_delay = 2100
 
 current_lives = 3
-
+show_upgrade_popup = False
 
 fire_canon = False
 
@@ -202,8 +202,8 @@ def draw_window(xpos):
     # === ADD: Render background ===
     BACKGROUND_IMAGE.render(GAME_SURFACE)
     boat_pos = spawn_boat()
-    anim.handle_animations()
-    
+    anim.handle_animations(upgrade_system.get_current_gold_amount())
+    GAME_SURFACE.blit(anim.get_upgrade_popup(), (boat_pos.x, 155))
     player_sprite = anim.get_player_img()
     GAME_SURFACE.blit(player_sprite, (xpos, 135))
     GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 105))
@@ -352,9 +352,6 @@ def shark_spawner(boat_pos, current_time, xpos):
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     GAME_SURFACE.blit(currentSprite.get_sprite(), (xpos, 200))
-
-#def upgrade_popup():
-    #GAME_SURFACE.blit(upgrade_message_sprite.get_sprite(), (500, 300))
 
 if __name__ == "__main__":
     main()
