@@ -8,6 +8,7 @@ from upgrades import UpgradeSystem
 from animations import Animations
 from game_over_screen import show_game_over_screen
 from pause_game import show_pause_screen
+from healthui import HealthUI
 
 pygame.init()
 
@@ -108,6 +109,7 @@ score_manager = ScoreManager()
 
 upgrade_system = UpgradeSystem()
 
+health_ui = HealthUI()
 
 shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
@@ -236,6 +238,8 @@ def game_ui():
     coin_text = score_font.render(
         f"Coins: {upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
     )
+
+    health_ui.draw_hearts(GAME_SURFACE, current_lives)
 
     GAME_SURFACE.blit(score_text, (20, 20))
     GAME_SURFACE.blit(high_score_text, (20, 60))
