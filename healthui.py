@@ -20,13 +20,13 @@ class HealthUI:
 
         index = 2
         for i in range(current_lives):
-            window.blit(self.__heart_sprite.get_sprite(), (x_pos, 15))
+            window.blit(self.__heart_sprite.get_sprite(), (x_pos, 10))
             self.__current_boat_sprite = self.__boat_sprites_list[index]
             index -= 1
             x_pos += 100
 
         for i in range(3 - current_lives):
-            window.blit(self.__black_heart_sprite.get_sprite(), (x_pos, 15))
+            window.blit(self.__black_heart_sprite.get_sprite(), (x_pos, 10))
             x_pos += 100
 
     def get_current_boat_sprite(self):
