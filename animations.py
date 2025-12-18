@@ -5,7 +5,7 @@ from audio import Audio
 
 
 class Animations:
-    
+
     def __init__(self):
 
         self.__clock = pygame.time.Clock()
@@ -158,20 +158,15 @@ class Animations:
 
     def get_player_img(self):
         return self.__player_image.get_sprite()
-    
+
     def get_shark_img(self):
         return self.__shark_image.get_sprite()
     
-    def get_orca_img(self):
-        return self.__orca_image.get_sprite()
-    
     def get_smoke_img(self):
         return self.__cannon_image.get_sprite()
-    
+
     def get_cannon_img(self):
         return self.__cannon_idle.get_sprite()
-    
+
     def get_upgrade_particle_img(self):
         return self.__upgrade_particle_image.get_sprite()
-
-    
