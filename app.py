@@ -6,6 +6,8 @@ from audio import Audio
 from scores import ScoreManager
 from upgrades import UpgradeSystem
 from animations import Animations
+from game_over_screen import show_game_over_screen
+from pause_game import show_pause_screen
 
 pygame.init()
 
@@ -93,10 +95,10 @@ BACKGROUND_IMAGE = Background(
 # sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 # sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
 boat_sprite = Sprite("Assets/Sprites/Boat.png", 720, 290)
-shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
+# shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
 canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
-canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
-shark_sprite.rotate_sprite()
+# canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
+# shark_sprite.rotate_sprite()
 
 anim = Animations()
 
@@ -111,8 +113,6 @@ shart_y_spawn_pos = 800
 shark_x_spawn_pos_list = [300, 600, 900]
 
 active_sharks_list = []
-
-active_orca_list = []
 
 active_cannonballs_list = []
 
@@ -142,6 +142,23 @@ def scale_surface_to_screen(surface, screen):
     offset_y = (wh - new_h) // 2
 
     return scaled_surface, offset_x, offset_y
+
+def init_game():
+    global shark_spawn_delay
+    global current_lives
+    global shark_speed
+
+    shark_spawn_delay = 2100
+    current_lives = 3
+    shark_speed = 1
+    active_sharks_list.clear()
+
+    active_cannonballs_list.clear()
+
+    score_manager.reset_score()
+
+    upgrade_system.reset_game()
+    
 # The main function that controls the game
 def main():
     score_manager.reset_score()
@@ -171,6 +188,8 @@ def main():
                     anim.__firetimer = 0
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim, audio)
+                if event.key == K_ESCAPE:
+                    show_pause_screen(WINDOW, init_game)
 
         draw_window(xpos)
 
@@ -319,8 +338,7 @@ def shark_spawner(boat_pos, current_time, xpos):
             active_sharks_list.remove(shark)
             if current_lives <= 0:
                 score_manager.save_score()
-                pygame.quit()
-                sys.exit() 
+                show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
 
         shark_pos_list.append(shark_pos)
 
@@ -331,8 +349,8 @@ def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     GAME_SURFACE.blit(currentSprite.get_sprite(), (xpos, 200))
 
-def upgrade_popup():
-    GAME_SURFACE.blit(upgrade_message_sprite.get_sprite(), (500, 300))
+#def upgrade_popup():
+    #GAME_SURFACE.blit(upgrade_message_sprite.get_sprite(), (500, 300))
 
 if __name__ == "__main__":
     main()
