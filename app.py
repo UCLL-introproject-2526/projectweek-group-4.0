@@ -27,7 +27,7 @@ GAME_HEIGHT = 800
 WINDOW = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 GAME_SURFACE = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 pygame.display.set_caption('My Game!')
-score_font = pygame.font.Font(None, 36)
+score_font = pygame.font.Font("Assets/fonts/Pixel Game.otf", 36)
 
 class ObjectInstanceData:
     def __init__(self, ypos_increment, xpos, ypos):
@@ -97,7 +97,8 @@ BACKGROUND_IMAGE = Background(
 # sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 # sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
 # shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
-canonball_sprite=Sprite("Assets/Sprites/CanonBall.png",50,50)
+canonball_sprite = Sprite("Assets/Sprites/CanonBall.png",50,50)
+gold_sprite = Sprite("Assets/Sprites/Gold.png", 50, 50)
 # canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
 # shark_sprite.rotate_sprite()
 
@@ -238,14 +239,17 @@ def game_ui():
     )
 
     coin_text = score_font.render(
-        f"Coins: {upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
+        f"{upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
     )
 
     health_ui.draw_hearts(GAME_SURFACE, current_lives)
 
+    GAME_SURFACE.blit(gold_sprite.get_sprite(), (1000, 40))
+
+
     GAME_SURFACE.blit(score_text, (20, 20))
     GAME_SURFACE.blit(high_score_text, (20, 60))
-    GAME_SURFACE.blit(coin_text, (1000,100))
+    GAME_SURFACE.blit(coin_text, (1065,50))
 
 def spawn_boat():
     screen_width = GAME_WIDTH
