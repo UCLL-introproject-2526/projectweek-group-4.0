@@ -15,7 +15,7 @@ class Audio:
         self._cannon_fire_sound.set_volume(volume)
         self._drink_sound.set_volume(volume*1.5)
         self._death_sound.set_volume(volume)
-        self._seagull_sound.set_volume(volume)
+        self._seagull_sound.set_volume(volume*8)
         self._upgrade_sound.set_volume(volume)
         self.muted = False
         self.volume = volume
@@ -35,10 +35,12 @@ class Audio:
     def PlayMusic(self):
         self._main_music.play(loops=-1)
         self._ambient_music.play(loops=-1)
+        self._seagull_sound.stop()
     
     def StopMusic(self):
         self._main_music.stop()
         self._ambient_music.stop()
+
 
     def Drink(self):
         self._drink_sound.play()

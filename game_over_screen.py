@@ -1,6 +1,5 @@
 import pygame
 import sys
-import audio
 
 pygame.font.init()
 
@@ -23,9 +22,6 @@ def show_game_over_screen(screen, current_score, high_score, init_game):
 
     quit_img = pygame.image.load("Assets/Sprites/quit.png").convert_alpha()
     quit_img = pygame.transform.scale(quit_img, (BUTTON_WIDTH, BUTTON_HEIGHT))
-
-    audio_instance = audio.Audio()
-    audio_instance.Death()
 
     screen_width, screen_height = screen.get_size()
     running = True
@@ -75,8 +71,6 @@ def show_game_over_screen(screen, current_score, high_score, init_game):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if restart_rect.collidepoint(event.pos):
-                    audio_instance.StopMusic()
-                    audio_instance.PlayMusic()
                     init_game()
                     return "restart"
                 elif quit_rect.collidepoint(event.pos):

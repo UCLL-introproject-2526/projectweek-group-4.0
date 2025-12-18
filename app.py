@@ -158,6 +158,7 @@ def init_game():
 
     score_manager.reset_score()
 
+    audio.PlayMusic()
     upgrade_system.reset_game()
     
 # The main function that controls the game
@@ -341,6 +342,8 @@ def shark_spawner(boat_pos, current_time, xpos):
             active_sharks_list.remove(shark)
             if current_lives <= 0:
                 score_manager.save_score()
+                audio.StopMusic()
+                audio.Death()
                 show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
 
         shark_pos_list.append(shark_pos)
@@ -351,6 +354,11 @@ def shark_spawner(boat_pos, current_time, xpos):
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     GAME_SURFACE.blit(currentSprite.get_sprite(), (xpos, 200))
+
+def sync_audio(_audio):
+    global audio
+    audio = _audio
+
 
 if __name__ == "__main__":
     main()

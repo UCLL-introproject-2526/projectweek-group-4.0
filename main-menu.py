@@ -2,6 +2,7 @@
 import pygame
 import sys
 from app import main
+from app import sync_audio
 from sprite import Sprite
 from audio import Audio
 import options
@@ -205,4 +206,5 @@ def main_menu():
 
 
 main_menu()
+sync_audio(audio)
 main()
