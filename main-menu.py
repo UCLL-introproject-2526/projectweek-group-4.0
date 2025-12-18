@@ -11,8 +11,9 @@ pygame.init()
 
 audio = Audio(volume=1.0)
 
-WIDTH, HEIGHT = 1200, 1000
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+WIDTH, HEIGHT = 1200, 800
+screen = pygame.display.set_mode((WIDTH, HEIGHT) , pygame.RESIZABLE)
+
 pygame.display.set_caption("Drunken Sailor")
 
 BLACK = (0, 0, 0)

@@ -6,10 +6,17 @@ class Audio:
         self._ambient_music = pygame.mixer.Sound("Assets/Audio/ambient Loop.wav")
         self._cannon_fire_sound = pygame.mixer.Sound("Assets/Audio/Cannon Fire.wav")
         self._drink_sound = pygame.mixer.Sound("Assets/Audio/Drink.wav")
+        self._death_sound = pygame.mixer.Sound("Assets/Audio/Death_Sound_Effect.wav")
+        self._seagull_sound = pygame.mixer.Sound("Assets/Audio/Seagulls.wav")
+        self._upgrade_sound = pygame.mixer.Sound("Assets/Audio/Upgrade_Sound_Effect.wav")
+
         self._main_music.set_volume(volume)
         self._ambient_music.set_volume(volume)
         self._cannon_fire_sound.set_volume(volume)
         self._drink_sound.set_volume(volume*1.5)
+        self._death_sound.set_volume(volume)
+        self._seagull_sound.set_volume(volume)
+        self._upgrade_sound.set_volume(volume)
         self.muted = False
         self.volume = volume
 
@@ -35,6 +42,14 @@ class Audio:
 
     def Drink(self):
         self._drink_sound.play()
+
+    def Death(self):
+        self._death_sound.play()
+        self._seagull_sound.play()
+        self._main_music.stop()
+    
+    def Upgrade(self):
+        self._upgrade_sound.play()
 
     def _apply_volume(self):
         vol = 0 if self.muted else self.volume

@@ -39,6 +39,8 @@ class Animations:
         self.__upgrade_particle_3 = Sprite("Assets/Sprites/upgrade_particle_3.png", 200, 200)
         self.__upgrade_particle_4 = Sprite("Assets/Sprites/upgrade_particle_4.png", 200, 200)
 
+        self.__upgrade_message_sprite = Sprite("Assets/Sprites/upgrade_popup.png",100,100)
+
         self.shark1 = Sprite("Assets/Sprites/shark_swim_1.png", 100, 162)
         self.shark1.rotate_sprite()
         self.shark2 = Sprite("Assets/Sprites/shark_swim_2.png", 100, 162)
@@ -207,3 +209,6 @@ class Animations:
 
     def get_upgrade_particle_img(self):
         return self.__upgrade_particle_image.get_sprite()
+    
+    def get_upgrade_popup(self):
+        return self.__upgrade_message_sprite.get_sprite()

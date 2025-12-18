@@ -19,7 +19,7 @@ fpsClock = pygame.time.Clock()
 
 #WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 GAME_WIDTH = 1200
-GAME_HEIGHT = 1000
+GAME_HEIGHT = 800
 
 WINDOW = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 GAME_SURFACE = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -170,7 +170,7 @@ def main():
                     fire_canon = True
                     anim.__firetimer = 0
                 if event.key == K_u or event.key == K_v:
-                    upgrade_system.upgrade(anim)
+                    upgrade_system.upgrade(anim, audio)
 
         draw_window(xpos)
 
@@ -184,8 +184,8 @@ def draw_window(xpos):
     anim.handle_animations()
     
     player_sprite = anim.get_player_img()
-    GAME_SURFACE.blit(player_sprite, (xpos, 200))
-    GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 150))
+    GAME_SURFACE.blit(player_sprite, (xpos, 135))
+    GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 105))
     current_time = pygame.time.get_ticks()
 
 
@@ -226,12 +226,12 @@ def spawn_boat():
     screen_width = GAME_WIDTH
     boat_pos = GAME_SURFACE.blit(
         boat_sprite.get_sprite(),
-        (screen_width * 0.25, 130)
+        (screen_width * 0.25, 65)
     )
     cannon_sprite = upgrade_system.get_current_cannon_spirte().get_sprite()
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x, 225))
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 300, 225))
-    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 600, 225))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x, 160))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 300, 160))
+    GAME_SURFACE.blit(cannon_sprite, (boat_pos.x + 600, 160))
 
     boat_pos.y -= 100
     return boat_pos
@@ -241,7 +241,7 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
     global fire_canon
     global last_time_cannonball_timer 
 
-    smoke_animation(xpos , 220)
+    smoke_animation(xpos , 155)
     particle_animation()
 
     if current_time - last_time_cannonball_timer >= upgrade_system.get_time_between_cannonfire() and fire_canon == True:
@@ -272,9 +272,9 @@ def smoke_animation(x, y):
     GAME_SURFACE.blit(anim.get_smoke_img(), (x, y))
 
 def particle_animation():
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (250, 180))
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (550, 180))
-    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (850, 180))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (250, 115))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (550, 115))
+    GAME_SURFACE.blit(anim.get_upgrade_particle_img(), (850, 115))
 
 def shark_spawner(boat_pos, current_time, xpos):
     global last_time_shark_timer
@@ -331,6 +331,8 @@ def animate_sailor(xpos, currentSprite):
     print(currentSprite)
     GAME_SURFACE.blit(currentSprite.get_sprite(), (xpos, 200))
 
+def upgrade_popup():
+    GAME_SURFACE.blit(upgrade_message_sprite.get_sprite(), (500, 300))
 
 if __name__ == "__main__":
     main()
