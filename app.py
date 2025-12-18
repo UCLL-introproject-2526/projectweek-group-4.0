@@ -345,6 +345,7 @@ def shark_spawner(boat_pos, current_time, xpos):
         
         if boat_pos.colliderect(shark_pos):
             current_lives -= 1
+            audio.BoatTakesDamage()
             active_sharks_list.remove(shark)
             if current_lives <= 0:
                 score_manager.save_score()
