@@ -1,5 +1,6 @@
 import pygame
 import sys
+from sprite import Sprite
 
 pygame.init()
 
@@ -10,6 +11,43 @@ pygame.display.set_caption("Options")
 clock = pygame.time.Clock()
 FONT = pygame.font.Font(None, 48)
 SMALL_FONT = pygame.font.Font(None, 32)
+
+mute_sprite = Sprite(
+    "Assets/Sprites/mute2.png",
+    450,   # width
+    100    # height
+)
+mute_image = mute_sprite.get_sprite()
+
+fullscreen_sprite = Sprite(
+    "Assets/Sprites/fullscreen2.png",
+    450,   # width
+    100    # height
+)
+fullscreen_image = fullscreen_sprite.get_sprite()
+
+window_sprite = Sprite(
+    "Assets/Sprites/window2.png",
+    450,   # width
+    100    # height
+)
+window_image = window_sprite.get_sprite()
+
+BUTTON_Y_START = HEIGHT // 2 + 150
+BUTTON_SPACING = 125
+
+mute_rect = mute_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START)
+)
+
+fullscreen_rect = fullscreen_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
+)
+
+window_rect = window_image.get_rect(
+    center=(WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
+)
+
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -45,6 +83,47 @@ class ScrollingBackground:
 # Load background (replace with your tileable image path)
 BG_IMAGE = ScrollingBackground("Assets/background/background3.png", (450, 250), speed=0.3)
 
+HOVER_SCALE = 1.08
+HOVER_TIME = 0.7  # seconds
+
+buttons = {
+    "mute": {
+        "image": mute_image,
+        "rect": mute_rect,
+        "scale": 1.0,
+    },
+    "fullscreen": {
+        "image": fullscreen_image,
+        "rect": fullscreen_rect,
+        "scale": 1.0,
+    },
+    "window": {
+        "image": window_image,
+        "rect": window_rect,
+        "scale": 1.0,
+    }
+}
+
+def draw_hover_button(screen, button, dt):
+    target_scale = HOVER_SCALE if button["rect"].collidepoint(pygame.mouse.get_pos()) else 1.0
+
+    # Smooth interpolation
+    scale_speed = (HOVER_SCALE - 1.0) / HOVER_TIME
+    if button["scale"] < target_scale:
+        button["scale"] = min(button["scale"] + scale_speed * dt, target_scale)
+    elif button["scale"] > target_scale:
+        button["scale"] = max(button["scale"] - scale_speed * dt, target_scale)
+
+    image = button["image"]
+    w, h = image.get_size()
+    scaled_image = pygame.transform.smoothscale(
+        image,
+        (int(w * button["scale"]), int(h * button["scale"]))
+    )
+
+    rect = scaled_image.get_rect(center=button["rect"].center)
+    screen.blit(scaled_image, rect)
+
 
 def options_menu(audio):
     global screen
@@ -59,16 +138,19 @@ def options_menu(audio):
     knob_w, knob_h = 20, 30
     slider_offset_y = 380  # vertical offset from top
 
-    # Button dimensions
-    button_width, button_height = 300, 60
-    mute_offset_y = 470
-    screen_offset_y = 560
-
     while True:
         # ----- DRAW SCROLLING BACKGROUND -----
         BG_IMAGE.render(screen)
 
         WIDTH, HEIGHT = screen.get_width(), screen.get_height()
+
+        # ----- UPDATE BUTTON POSITIONS -----
+        BUTTON_Y_START = HEIGHT // 2 + 150
+        BUTTON_SPACING = 125
+
+        buttons["mute"]["rect"].center = (WIDTH // 2, BUTTON_Y_START)
+        buttons["fullscreen"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
+        buttons["window"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
 
         # ----- TEXT -----
         title = FONT.render("OPTIONS", True, BLACK)
@@ -93,20 +175,13 @@ def options_menu(audio):
         pygame.draw.rect(screen, GRAY, slider_bg)
         pygame.draw.rect(screen, BLUE, slider_knob)
 
-        # ----- BUTTONS -----
-        mute_btn = pygame.Rect((WIDTH - button_width)//2, mute_offset_y, button_width, button_height)
-        screen_btn = pygame.Rect((WIDTH - button_width)//2, screen_offset_y, button_width, button_height)
+        # Decide which screen toggle button to show
+        active_button = "window" if fullscreen else "fullscreen"
 
-        mute_text = "UNMUTE" if audio.muted else "MUTE"
-        screen_text = "WINDOWED" if fullscreen else "FULLSCREEN"
-
-        pygame.draw.rect(screen, DARK, mute_btn, border_radius=8)
-        pygame.draw.rect(screen, DARK, screen_btn, border_radius=8)
-
-        screen.blit(FONT.render(mute_text, True, WHITE),
-                    FONT.render(mute_text, True, WHITE).get_rect(center=mute_btn.center))
-        screen.blit(FONT.render(screen_text, True, WHITE),
-                    FONT.render(screen_text, True, WHITE).get_rect(center=screen_btn.center))
+        # Draw buttons
+        for key in buttons:
+            if key == "mute" or key == active_button:
+                draw_hover_button(screen, buttons[key], clock.get_time() / 1000)
 
         # ----- EVENTS -----
         for event in pygame.event.get():
@@ -127,19 +202,15 @@ def options_menu(audio):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if slider_knob.collidepoint(event.pos):
                     dragging = True
-                if mute_btn.collidepoint(event.pos):
+                if buttons["mute"]["rect"].collidepoint(event.pos):
                     audio.toggle_mute()
-                if screen_btn.collidepoint(event.pos):
-                    fullscreen = not fullscreen
-                    if fullscreen:
-                        modes = pygame.display.list_modes()
-
-                        screen = pygame.display.set_mode(
-                        (modes[0][0], modes[0][1]),
-                        pygame.FULLSCREEN
-                        )
-                    else:
-                        screen = pygame.display.set_mode((WIDTH, HEIGHT))
+                if active_button == "fullscreen" and buttons["fullscreen"]["rect"].collidepoint(event.pos):
+                    fullscreen = True
+                    modes = pygame.display.list_modes()
+                    screen = pygame.display.set_mode((modes[0][0], modes[0][1]), pygame.FULLSCREEN)
+                elif active_button == "window" and buttons["window"]["rect"].collidepoint(event.pos):
+                    fullscreen = False
+                    screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
             if event.type == pygame.MOUSEBUTTONUP:
                 dragging = False
