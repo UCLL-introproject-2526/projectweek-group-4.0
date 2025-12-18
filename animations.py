@@ -88,7 +88,7 @@ class Animations:
         self.__particletimer = 0.4
 
     def handle_animations(self):
-
+        #IDLE ANIMATION
         if self.__idletimer <= 0 and self.__player_idle:
             self.__idletimer = 0.5 #seconds
             if self.__idle_sprite == 0:
