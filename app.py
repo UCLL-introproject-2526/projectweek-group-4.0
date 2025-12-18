@@ -289,10 +289,12 @@ def cannon_ball_spawner(sharkpos_list, current_time, xpos):
         for sharkpos in sharkpos_list:
             if sharkpos.colliderect(cannonball_pos):
                 active_cannonballs_list.remove(cannonball)
+                audio.EnemyHit()
                 if not active_sharks_list[index].check_alive():
                     sharkpos_list.pop(index)
                     active_sharks_list.pop(index)
 
+ 
                     score_manager.add_score(100)
                     upgrade_system.add_gold(50)
             index += 1
