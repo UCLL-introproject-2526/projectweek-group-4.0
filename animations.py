@@ -114,7 +114,6 @@ class Animations:
             self.__sharktimer = 0.1 #seconds
 
         #ORCA ANIMATION
-        if self.__sharktimer <= 0:
             if self.__shark_sprite >= len(self.__orca_sprites_list):
                 self.__shark_sprite = 0
             self.__shark_image = self.__orca_sprites_list[self.__shark_sprite]
