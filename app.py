@@ -30,6 +30,15 @@ class ObjectInstanceData:
     def get_next_frame(self):
         self.__ypos += self.ypos_increment
         return (self.__xpos, self.__ypos)
+    
+class Enemy:
+    def __init__(self, objectinstnace, anim_function, health_amount):
+        self.__object_instance = OPENGLBLIT
+        self.__anim_function = anim_function
+        self.__health_amount = health_amount
+
+    def get_anim(self):
+        return self.__anim_function()
 
 # === ADD: Background class ===
 class Background:
@@ -243,7 +252,8 @@ def shark_spawner(boat_pos, current_time, xpos):
 
         #if(random_chance)
 
-        shark = ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], shart_y_spawn_pos)
+        shark = Enemy(ObjectInstanceData(-shark_speed, shark_x_spawn_pos_list[random.randint(0, len(shark_x_spawn_pos_list) -1)], 
+                                         shart_y_spawn_pos), anim.get_shark_img())
         active_sharks_list.append(shark)
         last_time_shark_timer = current_time
 
@@ -252,7 +262,7 @@ def shark_spawner(boat_pos, current_time, xpos):
     global current_lives
 
     for shark in active_sharks_list:
-        shark_pos = WINDOW.blit(anim.get_shark_img(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
+        shark_pos = WINDOW.blit(shark.get_anim(), (shark.get_next_frame()[0], shark.get_next_frame()[1]))
         
         if boat_pos.colliderect(shark_pos):
             current_lives -= 1
