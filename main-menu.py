@@ -3,6 +3,7 @@ import pygame
 import sys
 from app import main
 from app import sync_audio
+from app import init_game
 from sprite import Sprite
 from audio import Audio
 import options
@@ -213,6 +214,12 @@ def main_menu():
         clock.tick(60)
 
 
-main_menu()
-sync_audio(audio)
-main()
+while True:
+    main_menu()
+    sync_audio(audio)
+    init_game()
+    result = main()
+
+    if result == "quit":
+        pygame.quit()
+        sys.exit()
