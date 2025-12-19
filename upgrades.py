@@ -66,6 +66,7 @@ class UpgradeSystem:
         self.__gold_amount = 0
         self.__current_upgrade_index = 0
         self.__current_cannon_sprite = self.__cannon1
+        self.__current_time_between_cannonfire = 900
 
     def upgrade(self, anim, audio):
 
