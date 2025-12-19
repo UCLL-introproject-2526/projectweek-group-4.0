@@ -41,7 +41,7 @@ class ScrollingBackground:
                 surface.blit(self.tile, (x - self.offset_x, y))
 
 # -------------------- Game Over Scherm --------------------
-def show_game_over_screen(screen, current_score, high_score, init_game):
+def show_game_over_screen(screen, current_score, high_score, init_game, show_menu):
     screen_width, screen_height = screen.get_size()
     clock = pygame.time.Clock()
     running = True
@@ -111,6 +111,8 @@ def show_game_over_screen(screen, current_score, high_score, init_game):
                     init_game()
                     return "restart"
                 elif quit_button["rect"].collidepoint(event.pos):
+                    show_menu()
+                    return "menu"
                     pygame.quit()
                     sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

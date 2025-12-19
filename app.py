@@ -153,6 +153,8 @@ fire_canon = False
 
 can_input = True
 
+restart_game = False
+
 def scale_surface_to_screen(surface, screen):
     sw, sh = surface.get_size()
     ww, wh = screen.get_size()
@@ -226,7 +228,10 @@ def main():
                     if result == "menu":
                         return  # <-- THIS sends you back to main_menu
 
-
+        global restart_game
+        if restart_game:
+            restart_game = False
+            return
         draw_window(xpos)
 
 def draw_window(xpos):
@@ -410,11 +415,17 @@ def shark_spawner(boat_pos, current_time, xpos):
                 can_input = False
 
                 current_lives = 0
+
+
                 def game_over():
+                  
+
                     score_manager.save_score()
                     audio.StopMusic()
                     audio.Death()
-                    show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
+                    show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game, set_menu)
+
+                
 
                 anim.show_game_over_screen(game_over)
                 active_sharks_list.clear()
@@ -425,6 +436,10 @@ def shark_spawner(boat_pos, current_time, xpos):
 
 
     cannon_ball_spawner(shark_pos_list, current_time, xpos)
+
+def set_menu():
+    global restart_game
+    restart_game = True
 
 def animate_sailor(xpos, currentSprite):
     print(currentSprite)
