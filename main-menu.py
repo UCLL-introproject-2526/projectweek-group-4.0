@@ -29,6 +29,8 @@ logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
 board_start_game_sprite = Sprite("Assets/Sprites/board_start_game.png", 200, 50)
 board_start_game_image = board_start_game_sprite.get_sprite()
 
+manual_sprite = Sprite("Assets/Sprites/Manual.png", 150, 150)
+
 logo_sprite = Sprite(
     "Assets/Sprites/oficial_logo_inv.png",
     600,   # width
@@ -173,6 +175,10 @@ def main_menu():
         logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
         screen.blit(logo_image, logo_rect)
 
+        #----MANUAL----
+        manual_rect = manual_sprite.get_sprite().get_rect(center=(WIDTH // 1.14, HEIGHT // 6))
+        screen.blit(manual_sprite.get_sprite(), manual_rect)
+
         # ----- BUTTONS POSITIONS -----
         BUTTON_Y_START = HEIGHT // 2 + 150
         BUTTON_SPACING = 125
@@ -200,6 +206,8 @@ def main_menu():
                 elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
+                elif manual_rect.collidepoint(event.pos):
+                    print("test")
 
         pygame.display.flip()
         clock.tick(60)
