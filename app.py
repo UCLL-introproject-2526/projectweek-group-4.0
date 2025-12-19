@@ -9,6 +9,7 @@ from animations import Animations
 from game_over_screen import show_game_over_screen
 from pause_game import show_pause_screen
 from healthui import HealthUI
+import asyncio
 
 pygame.init()
 
@@ -170,7 +171,7 @@ def init_game():
     upgrade_system.reset_game()
     
 # The main function that controls the game
-def main():
+async def main():
     score_manager.reset_score()
     looping = True
     startpos = 600
@@ -202,6 +203,7 @@ def main():
                     show_pause_screen(WINDOW, init_game, audio)
 
         draw_window(xpos)
+        await asyncio.sleep(0)
 
 def draw_window(xpos):
     global last_time_shark_timer 

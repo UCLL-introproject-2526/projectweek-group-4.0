@@ -6,7 +6,7 @@ from app import sync_audio
 from sprite import Sprite
 from audio import Audio
 import options
-
+import asyncio
 
 pygame.init()
 
@@ -159,7 +159,7 @@ def draw_hover_button(screen, button, dt):
 bg_offset_x = 0
 bg_offset_y = 0
 
-def main_menu():
+async def main_menu():
     global bg_offset_x, bg_offset_y, screen
     audio.PlayMusic()
 
@@ -211,8 +211,9 @@ def main_menu():
 
         pygame.display.flip()
         clock.tick(60)
+    asyncio.sleep(0)
 
 
-main_menu()
+asyncio.run(main_menu())
 sync_audio(audio)
-main()
+asyncio.run(main())
