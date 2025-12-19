@@ -9,7 +9,6 @@ from animations import Animations
 from game_over_screen import show_game_over_screen
 from pause_game import show_pause_screen
 from healthui import HealthUI
-import asyncio
 
 pygame.init()
 
@@ -150,7 +149,7 @@ def scale_surface_to_screen(surface, screen):
 
     return scaled_surface, offset_x, offset_y
 
-def init_game():
+def init_game(play_audio = True):
     global shark_spawn_delay
     global current_lives
     global shark_speed
@@ -167,11 +166,13 @@ def init_game():
 
     score_manager.reset_score()
 
-    audio.PlayMusic()
+    if play_audio:
+        audio.PlayMusic()
+
     upgrade_system.reset_game()
     
 # The main function that controls the game
-async def main():
+def main():
     score_manager.reset_score()
     looping = True
     startpos = 600
@@ -200,10 +201,13 @@ async def main():
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim, audio)
                 if event.key == K_ESCAPE:
-                    show_pause_screen(WINDOW, init_game, audio)
+                    result = show_pause_screen(WINDOW, init_game, audio)
+
+                    if result == "menu":
+                        return  # <-- THIS sends you back to main_menu
+
 
         draw_window(xpos)
-        await asyncio.sleep(0)
 
 def draw_window(xpos):
     global last_time_shark_timer 
