@@ -5,6 +5,7 @@ from app import main
 from app import sync_audio
 from sprite import Sprite
 from audio import Audio
+import howtoplay
 import options
 
 
@@ -58,6 +59,14 @@ board_quit_sprite = Sprite(
     100
 )
 board_quit_image = board_quit_sprite.get_sprite()
+
+board_manual_sprite = Sprite(
+    "Assets/Sprites/Manual.png",
+    150,
+    150
+)
+board_manual_image = board_manual_sprite.get_sprite()
+
 # Text surfaces
 logo_rect = logo_image.get_rect(center=(WIDTH // 2, HEIGHT // 3))
 #start_text = MENU_FONT.render("Press ENTER to Start", True, BLACK)
@@ -78,6 +87,10 @@ options_rect = board_options_image.get_rect(
 
 quit_rect = board_quit_image.get_rect(
     center=(WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING * 2)
+)
+
+manual_rect = manual_sprite.get_sprite().get_rect(
+    center=(WIDTH // 1.14, HEIGHT // 6)
 )
 
 
@@ -133,6 +146,11 @@ buttons = {
         "image": board_quit_image,
         "rect": quit_rect,
         "scale": 1.0,
+    },
+    "howtoplay": {
+        "image": board_manual_image,
+        "rect": manual_rect,
+        "scale": 1.0,
     }
 }
 
@@ -176,8 +194,8 @@ def main_menu():
         screen.blit(logo_image, logo_rect)
 
         #----MANUAL----
-        manual_rect = manual_sprite.get_sprite().get_rect(center=(WIDTH // 1.14, HEIGHT // 6))
-        screen.blit(manual_sprite.get_sprite(), manual_rect)
+        #manual_rect = manual_sprite.get_sprite().get_rect(center=(WIDTH // 1.14, HEIGHT // 6))
+        #screen.blit(manual_sprite.get_sprite(), manual_rect)
 
         # ----- BUTTONS POSITIONS -----
         BUTTON_Y_START = HEIGHT // 2 + 150
@@ -186,11 +204,13 @@ def main_menu():
         buttons["start"]["rect"].center = (WIDTH // 2, BUTTON_Y_START)
         buttons["options"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING)
         buttons["quit"]["rect"].center = (WIDTH // 2, BUTTON_Y_START + BUTTON_SPACING * 2)
+        buttons["howtoplay"]["rect"].center = (WIDTH // 1.14, HEIGHT // 6)
 
         # ----- DRAW BUTTONS -----
         draw_hover_button(screen, buttons["start"], dt)
         draw_hover_button(screen, buttons["options"], dt)
         draw_hover_button(screen, buttons["quit"], dt)
+        draw_hover_button(screen, buttons["howtoplay"], dt)
 
         # ----- EVENTS -----
         for event in pygame.event.get():
@@ -206,8 +226,8 @@ def main_menu():
                 elif buttons["quit"]["rect"].collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
-                elif manual_rect.collidepoint(event.pos):
-                    print("test")
+                elif buttons["howtoplay"]["rect"].collidepoint(event.pos):
+                    howtoplay.howtoplay_menu()
 
         pygame.display.flip()
         clock.tick(60)

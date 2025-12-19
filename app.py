@@ -97,6 +97,7 @@ BACKGROUND_IMAGE = Background(
 # sailor_idle = Sprite("Assets/Sprites/Sailor.png", 50, 81)
 # sailor_anim1 = Sprite("Assets/Sprites/Sailor1.png", 50, 81)
 # shark_sprite = Sprite("Assets/Sprites/Shark.png", 100, 162)
+dead_player = Sprite("Assets/Sprites/DeadSailor.png",90, 144)
 canonball_sprite = Sprite("Assets/Sprites/CanonBall.png",50,50)
 gold_sprite = Sprite("Assets/Sprites/Gold.png", 50, 50)
 # canon_sprite=Sprite("Assets/Sprites/Canon.png",100,100)
@@ -212,7 +213,11 @@ def draw_window(xpos):
     boat_pos = spawn_boat()
     anim.handle_animations()
     player_sprite = anim.get_player_img()
-    GAME_SURFACE.blit(player_sprite, (xpos, 135))
+    if current_lives > 0:
+        GAME_SURFACE.blit(player_sprite, (xpos, 135))
+    else:
+        GAME_SURFACE.blit(dead_player.get_sprite(), (xpos, 135))
+
     GAME_SURFACE.blit(anim.get_parrot_img(), (boat_pos.x + 150, 105))
     current_time = pygame.time.get_ticks()
 
