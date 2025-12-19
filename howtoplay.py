@@ -77,7 +77,7 @@ def howtoplay_menu():
 
         # ----- TEXT -----
         back_text_surf = render_text_outline("ESC to return", OPTIONS_SMALL_FONT, WHITE, BLACK, outline_width=3)
-        screen.blit(back_text_surf, back_text_surf.get_rect(center=(WIDTH // 2, HEIGHT - 150)))
+        screen.blit(back_text_surf, back_text_surf.get_rect(center=(WIDTH // 2, HEIGHT - 90)))
 
         howtoplay_surf = howtoplay.get_sprite()
         screen.blit(howtoplay_surf, howtoplay_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50)))
