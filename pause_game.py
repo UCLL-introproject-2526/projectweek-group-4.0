@@ -17,7 +17,7 @@ def show_pause_screen(screen, restartgame, audio):
     - Quit knop (afbeelding)
     """
     resume_img = pygame.image.load("Assets/Sprites/Resume.png").convert_alpha()
-    resume_img = pygame.transform.scale(resume_img, (400, 200))
+    resume_img = pygame.transform.scale(resume_img, (BUTTON_WIDTH, BUTTON_HEIGHT))
 
     restart_img = pygame.image.load("Assets/Sprites/Restart2.png").convert_alpha()
     restart_img = pygame.transform.scale(restart_img, (BUTTON_WIDTH, BUTTON_HEIGHT))

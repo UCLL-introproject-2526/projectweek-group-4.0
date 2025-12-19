@@ -377,6 +377,8 @@ def shark_spawner(boat_pos, current_time, xpos):
                     show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
 
                 anim.show_game_over_screen(game_over)
+                active_sharks_list.clear()
+                shark_pos_list.clear()
                 
                                 
         shark_pos_list.append(shark_pos)
