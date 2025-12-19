@@ -7,9 +7,11 @@ class HealthUI:
         self.__boat_sprite1 = Sprite("Assets/Sprites/Boat.png", 720, 290)
         self.__boat_sprite2 = Sprite("Assets/Sprites/Boat1.png", 720, 290)
         self.__boat_sprite3 = Sprite("Assets/Sprites/Boat2.png", 720, 290)
+        self.__boat_sprite4 = Sprite("Assets/Sprites/Boat3.png", 720, 290)
 
 
-        self.__boat_sprites_list = [self.__boat_sprite1, self.__boat_sprite2, self.__boat_sprite3]
+
+        self.__boat_sprites_list = [self.__boat_sprite1, self.__boat_sprite2, self.__boat_sprite3, self.__boat_sprite4]
 
         self.__current_boat_sprite = self.__boat_sprite1
 
@@ -17,7 +19,7 @@ class HealthUI:
 
     def draw_hearts(self, window, current_lives):
         x_pos = 500
-
+    
         index = 2
         for i in range(current_lives):
             window.blit(self.__heart_sprite.get_sprite(), (x_pos, 10))
@@ -28,6 +30,10 @@ class HealthUI:
         for i in range(3 - current_lives):
             window.blit(self.__black_heart_sprite.get_sprite(), (x_pos, 10))
             x_pos += 100
+
+        if current_lives <= 0:
+            self.__current_boat_sprite = self.__boat_sprite4
+
 
     def get_current_boat_sprite(self):
         return self.__current_boat_sprite.get_sprite()

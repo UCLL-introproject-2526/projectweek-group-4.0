@@ -130,6 +130,8 @@ show_upgrade_popup = False
 
 fire_canon = False
 
+can_input = True
+
 def scale_surface_to_screen(surface, screen):
     sw, sh = surface.get_size()
     ww, wh = screen.get_size()
@@ -150,11 +152,14 @@ def init_game():
     global shark_spawn_delay
     global current_lives
     global shark_speed
+    global can_input
 
     shark_spawn_delay = 2100
     current_lives = 3
     shark_speed = 1
     active_sharks_list.clear()
+
+    can_input = True
 
     active_cannonballs_list.clear()
 
@@ -177,7 +182,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and can_input:
                 if event.key == K_a or event.key== K_LEFT or event.key== K_q:
                     if xpos > startpos - movementAmount:
                         xpos -= movementAmount
@@ -355,11 +360,20 @@ def shark_spawner(boat_pos, current_time, xpos):
             audio.BoatTakesDamage()
             active_sharks_list.remove(shark)
             if current_lives <= 0:
-                score_manager.save_score()
-                audio.StopMusic()
-                audio.Death()
-                show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
+                global can_input
 
+                can_input = False
+
+                current_lives = 0
+                def game_over():
+                    score_manager.save_score()
+                    audio.StopMusic()
+                    audio.Death()
+                    show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
+
+                anim.show_game_over_screen(game_over)
+                
+                                
         shark_pos_list.append(shark_pos)
 
 

@@ -18,6 +18,8 @@ class Animations:
         self.__idletimer = 0
         self.__firetimer = 0
         self.__particletimer = 0
+        self.__before_game_over_timer = 0
+
         self.__idle_sprite = 0
         self.__shark_sprite = 0
         self.__orca_sprite = 0
@@ -102,6 +104,8 @@ class Animations:
 
         self.__bg_offset_x = 0
 
+        self.__can_show_gameover_screen = False
+        self.__game_over_method = None
 
     def start_drink_anim(self):
         audio = Audio()
@@ -196,6 +200,7 @@ class Animations:
         self.__firetimer -= self.__dt
         self.__popup_timer -= self.__dt
         self.__particletimer -= self.__dt
+        self.__before_game_over_timer -= self.__dt
         self.__drinktimer = max(0, self.__drinktimer)
         self.__orcatimer = max(0, self.__orcatimer)
         self.__parrottimer = max(0, self.__parrottimer)
@@ -204,8 +209,13 @@ class Animations:
         self.__firetimer = max(0, self.__firetimer)
         self.__particletimer = max(0, self.__particletimer)
         self.__popup_timer = max(0, self.__popup_timer)
+        self.__before_game_over_timer = max(0, self.__before_game_over_timer)
 
         self.__bg_offset_x += 10 * self.__dt
+
+        if self.__can_show_gameover_screen and self.__before_game_over_timer <= 0:
+            self.__game_over_method()
+            self.__can_show_gameover_screen = False
 
 
     def get_player_img(self):
@@ -241,3 +251,13 @@ class Animations:
     def upgrade_message(self):
         self.__show_upgrade_message = True
         self.__popup_timer = 0.8
+
+
+
+    def show_game_over_screen(self, gameover_method):
+        if self.__can_show_gameover_screen:
+            return
+
+        self.__game_over_method = gameover_method
+        self.__before_game_over_timer = 1.8
+        self.__can_show_gameover_screen = True
