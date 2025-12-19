@@ -199,7 +199,11 @@ def main():
                 if event.key == K_u or event.key == K_v:
                     upgrade_system.upgrade(anim, audio)
                 if event.key == K_ESCAPE:
-                    show_pause_screen(WINDOW, init_game, audio)
+                    result = show_pause_screen(WINDOW, init_game, audio)
+
+                    if result == "menu":
+                        return  # <-- THIS sends you back to main_menu
+
 
         draw_window(xpos)
 
@@ -377,6 +381,8 @@ def shark_spawner(boat_pos, current_time, xpos):
                     show_game_over_screen(WINDOW, score_manager.current_score, score_manager.high_score, init_game)
 
                 anim.show_game_over_screen(game_over)
+                active_sharks_list.clear()
+                shark_pos_list.clear()
                 
                                 
         shark_pos_list.append(shark_pos)
