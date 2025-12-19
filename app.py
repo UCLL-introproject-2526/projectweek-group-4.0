@@ -29,6 +29,26 @@ GAME_SURFACE = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 pygame.display.set_caption('My Game!')
 score_font = pygame.font.Font("Assets/fonts/Pixel Game.otf", 36)
 
+def render_outlined_text(text, font, text_color, outline_color, outline_width=2):
+    text_surf = font.render(text, True, text_color)
+    w, h = text_surf.get_size()
+
+    outline_surf = pygame.Surface(
+        (w + outline_width * 2, h + outline_width * 2),
+        pygame.SRCALPHA
+    )
+
+    for dx in range(-outline_width, outline_width + 1):
+        for dy in range(-outline_width, outline_width + 1):
+            if dx != 0 or dy != 0:
+                outline_surf.blit(
+                    font.render(text, True, outline_color),
+                    (dx + outline_width, dy + outline_width)
+                )
+
+    outline_surf.blit(text_surf, (outline_width, outline_width))
+    return outline_surf
+
 class ObjectInstanceData:
     def __init__(self, ypos_increment, xpos, ypos):
         self.ypos_increment = ypos_increment
@@ -247,16 +267,30 @@ def draw_window(xpos):
     fpsClock.tick(FPS)
 
 def game_ui():
-    score_text = score_font.render(
-    f"Score: {score_manager.current_score}", True, (0, 0, 0)
-    )
-    high_score_text = score_font.render(
-        f"High Score: {score_manager.high_score}", True, (0, 0, 0)
+    score_text = render_outlined_text(
+    f"Score: {score_manager.current_score}",
+    score_font,
+    (255, 255, 255),
+    (0, 0, 0),
+    2
     )
 
-    coin_text = score_font.render(
-        f"{upgrade_system.get_current_gold_amount()}", True, (0, 0, 0)
+    high_score_text = render_outlined_text(
+        f"High Score: {score_manager.high_score}",
+        score_font,
+        (255, 255, 255),
+        (0, 0, 0),
+        2
     )
+
+    coin_text = render_outlined_text(
+        f"{upgrade_system.get_current_gold_amount()}",
+        score_font,
+        (255, 255, 255),
+        (0, 0, 0),
+        2
+    )       
+
 
     health_ui.draw_hearts(GAME_SURFACE, current_lives)
 
